@@ -1,0 +1,21 @@
+[package]
+name = "datadoctor-diskimage"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Disk image format support for forensic analysis"
+
+[dependencies]
+datadoctor-core = { path = "../core" }
+tokio.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+byteorder.workspace = true
+chrono.workspace = true
+sha2.workspace = true
+crc32fast.workspace = true
+flate2.workspace = true
+hex.workspace = true

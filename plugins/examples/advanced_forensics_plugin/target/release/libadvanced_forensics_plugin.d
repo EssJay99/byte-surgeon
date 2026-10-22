@@ -1,0 +1,1 @@
+/Users/ted/TLE/plugins/examples/advanced_forensics_plugin/target/release/libadvanced_forensics_plugin.dylib: /Users/ted/TLE/plugins/examples/advanced_forensics_plugin/src/lib.rs /Users/ted/TLE/plugins/src/lib.rs

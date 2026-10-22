@@ -1,0 +1,48 @@
+[package]
+name = "datadoctor-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+arbitrary = { version = "1.3", features = ["derive"] }
+libfuzzer-sys = "0.4"
+datadoctor-core = { path = "../core" }
+datadoctor-filesystem = { path = "../filesystem" }
+datadoctor-chat = { path = "../chat" }
+datadoctor-forensic = { path = "../forensic" }
+tempfile = "3.10"
+chrono = "0.4"
+
+[[bin]]
+name = "filesystem_parser"
+path = "fuzz_targets/filesystem_parser.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "signature_scanner"
+path = "fuzz_targets/signature_scanner.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "registry_parser"
+path = "fuzz_targets/registry_parser.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "email_parser"
+path = "fuzz_targets/email_parser.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "chat_recoverer"
+path = "fuzz_targets/chat_recoverer.rs"
+test = false
+doc = false

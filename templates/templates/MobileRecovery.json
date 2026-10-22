@@ -1,0 +1,55 @@
+{
+  "name": "MobileRecovery",
+  "description": "Recover data from mobile device backups or images",
+  "schema_version": "1.0",
+  "steps": [
+    {
+      "name": "Identify Backup",
+      "description": "Identify mobile backup type ({{backup_type}}) at {{backup_path}}",
+      "command": "file {{backup_path}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Decrypt Backup",
+      "description": "Decrypt backup if encrypted using {{encryption_key_source}}",
+      "command": "idevicebackup2 decryption {{backup_path}} --keybag {{keybag_path}}",
+      "parameters": {},
+      "required": false
+    },
+    {
+      "name": "Extract Archive",
+      "description": "Extract backup archive to {{output_dir}}",
+      "command": "tar xzf {{backup_path}} -C {{output_dir}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Parse Database",
+      "description": "Parse SQLite databases for contacts, messages, and app data",
+      "command": "sqlite3 {{output_dir}}/{{db_path}} '.tables'",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Export Media",
+      "description": "Extract photos, videos, and audio files",
+      "command": "find {{output_dir}} -type f \\( -iname '*.jpg' -o -iname '*.mp4' -o -iname '*.m4a' -o -iname '*.png' \\) -exec cp {} {{media_output_dir}} \\;",
+      "parameters": {},
+      "required": false
+    },
+    {
+      "name": "Generate Report",
+      "description": "Generate a summary report of recovered data",
+      "command": "echo 'Recovery complete. Files in {{output_dir}}' > {{report_path}}",
+      "parameters": {},
+      "required": false
+    }
+  ],
+  "configuration": {
+    "risk_level": "medium",
+    "estimated_duration": "20-90 minutes",
+    "prerequisites": ["idevicebackup2 installed", "sqlite3 installed"],
+    "output_format": "extracted files and databases"
+  }
+}

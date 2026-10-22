@@ -1,0 +1,184 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-release:
+    name: Build Release (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            ext: ""
+            asset_name: datadoctor-linux-x86_64
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            ext: ""
+            asset_name: datadoctor-linux-aarch64
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            ext: ""
+            asset_name: datadoctor-macos-x86_64
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            ext: ""
+            asset_name: datadoctor-macos-aarch64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            ext: ".exe"
+            asset_name: datadoctor-windows-x86_64
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Install cross-compilation tools
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+          echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ matrix.target }}-cargo-release-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ matrix.target }}-cargo-release-
+
+      - name: Build release binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Prepare artifact (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          mkdir -p release
+          cp target/${{ matrix.target }}/release/datadoctor${{ matrix.ext }} release/${{ matrix.asset_name }}${{ matrix.ext }}
+          chmod +x release/${{ matrix.asset_name }}${{ matrix.ext }}
+
+      - name: Prepare artifact (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          mkdir release
+          cp target/${{ matrix.target }}/release/datadoctor${{ matrix.ext }} release/${{ matrix.asset_name }}${{ matrix.ext }}
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: release/${{ matrix.asset_name }}${{ matrix.ext }}
+          retention-days: 7
+
+  generate-changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    outputs:
+      changelog: ${{ steps.changelog.outputs.content }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get previous tag
+        id: prev_tag
+        run: |
+          PREV=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          echo "tag=$PREV" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          if [ -z "${{ steps.prev_tag.outputs.tag }}" ]; then
+            RANGE="HEAD"
+          else
+            RANGE="${{ steps.prev_tag.outputs.tag }}..HEAD"
+          fi
+
+          CHANGELOG=$(git log $RANGE --pretty=format:"- %s (%h) by %an" --no-merges)
+
+          echo "content<<CHANGELOG_EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "CHANGELOG_EOF" >> $GITHUB_OUTPUT
+
+  create-release:
+    name: Create GitHub Release
+    needs: [build-release, generate-changelog]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create release archives
+        run: |
+          mkdir -p archives
+          for binary in artifacts/*; do
+            name=$(basename "$binary")
+            if [[ "$name" == *"windows"* ]]; then
+              zip "archives/${name%.exe}.zip" "$binary"
+            else
+              tar -czf "archives/${name}.tar.gz" -C artifacts "$name"
+            fi
+          done
+
+      - name: Generate checksums
+        id: checksums
+        run: |
+          cd archives
+          sha256sum * > SHA256SUMS.txt
+          echo "checksums<<EOF" >> $GITHUB_OUTPUT
+          cat SHA256SUMS.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Data Doctor ${{ github.ref_name }}
+          body: |
+            ## What's Changed
+
+            ${{ needs.generate-changelog.outputs.changelog }}
+
+            ## Installation
+
+            Download the appropriate binary for your platform:
+            - **Linux x86_64**: `datadoctor-linux-x86_64.tar.gz`
+            - **Linux ARM64**: `datadoctor-linux-aarch64.tar.gz`
+            - **macOS x86_64**: `datadoctor-macos-x86_64.tar.gz`
+            - **macOS ARM64**: `datadoctor-macos-aarch64.tar.gz`
+            - **Windows x86_64**: `datadoctor-windows-x86_64.zip`
+
+            ## Checksums
+            ```
+            ${{ steps.checksums.outputs.checksums }}
+          draft: false
+          prerelease: false
+          files: |
+            archives/*
+            archives/SHA256SUMS.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

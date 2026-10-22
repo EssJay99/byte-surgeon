@@ -1,0 +1,11 @@
+[package]
+name = "datadoctor-i18n"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Internationalization support for Data Doctor"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true

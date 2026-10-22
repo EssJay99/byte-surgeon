@@ -1,0 +1,37 @@
+[package]
+name = "datadoctor-cli"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Command-line interface for Data Doctor"
+
+[[bin]]
+name = "datadoctor"
+path = "src/main.rs"
+
+[dependencies]
+datadoctor-core = { path = "../core" }
+datadoctor-devices = { path = "../devices" }
+datadoctor-filesystem = { path = "../filesystem" }
+datadoctor-network = { path = "../network" }
+datadoctor-mobile = { path = "../mobile" }
+datadoctor-security = { path = "../security" }
+datadoctor-crypto = { path = "../crypto" }
+datadoctor-diskimage = { path = "../diskimage" }
+datadoctor-encryption = { path = "../encryption" }
+datadoctor-raid = { path = "../raid" }
+datadoctor-forensic = { path = "../forensic" }
+datadoctor-chat = { path = "../chat" }
+datadoctor-enterprise = { path = "../enterprise" }
+tokio.workspace = true
+clap.workspace = true
+dialoguer.workspace = true
+indicatif.workspace = true
+console.workspace = true
+colored.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+anyhow.workspace = true
+walkdir.workspace = true
+chrono.workspace = true
+serde_json.workspace = true

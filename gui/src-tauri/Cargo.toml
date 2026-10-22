@@ -1,0 +1,35 @@
+[package]
+name = "datadoctor-gui"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "GUI application for Data Doctor"
+
+[build-dependencies]
+tauri-build = { version = "1.5", features = [] }
+
+[dependencies]
+datadoctor-core = { path = "../../core" }
+datadoctor-devices = { path = "../../devices" }
+datadoctor-filesystem = { path = "../../filesystem" }
+datadoctor-network = { path = "../../network" }
+datadoctor-mobile = { path = "../../mobile" }
+datadoctor-security = { path = "../../security" }
+datadoctor-crypto = { path = "../../crypto" }
+datadoctor-diskimage = { path = "../../diskimage" }
+datadoctor-encryption = { path = "../../encryption" }
+datadoctor-raid = { path = "../../raid" }
+datadoctor-forensic = { path = "../../forensic" }
+datadoctor-chat = { path = "../../chat" }
+datadoctor-enterprise = { path = "../../enterprise" }
+tauri = { version = "1.6", features = ["shell-open"] }
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+anyhow.workspace = true
+dirs.workspace = true
+
+[features]
+custom-protocol = ["tauri/custom-protocol"]

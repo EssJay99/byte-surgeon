@@ -1,0 +1,14 @@
+/Users/ted/TLE/plugins/examples/advanced_forensics_plugin/target/release/deps/serde-b1ef986003fa39fb.d: /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /Users/ted/TLE/plugins/examples/advanced_forensics_plugin/target/release/build/serde-8588ffbd32d71a77/out/private.rs
+
+/Users/ted/TLE/plugins/examples/advanced_forensics_plugin/target/release/deps/libserde-b1ef986003fa39fb.rlib: /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /Users/ted/TLE/plugins/examples/advanced_forensics_plugin/target/release/build/serde-8588ffbd32d71a77/out/private.rs
+
+/Users/ted/TLE/plugins/examples/advanced_forensics_plugin/target/release/deps/libserde-b1ef986003fa39fb.rmeta: /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs /Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs /Users/ted/TLE/plugins/examples/advanced_forensics_plugin/target/release/build/serde-8588ffbd32d71a77/out/private.rs
+
+/Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/lib.rs:
+/Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/integer128.rs:
+/Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/mod.rs:
+/Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs:
+/Users/ted/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/ser.rs:
+/Users/ted/TLE/plugins/examples/advanced_forensics_plugin/target/release/build/serde-8588ffbd32d71a77/out/private.rs:
+
+# env-dep:OUT_DIR=/Users/ted/TLE/plugins/examples/advanced_forensics_plugin/target/release/build/serde-8588ffbd32d71a77/out

@@ -1,0 +1,48 @@
+{
+  "name": "EmailRecovery",
+  "description": "Recover emails from local mail stores and server backups",
+  "schema_version": "1.0",
+  "steps": [
+    {
+      "name": "Identify Mail Store",
+      "description": "Locate mail store at {{mail_store_path}}",
+      "command": "ls -la {{mail_store_path}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Backup Current State",
+      "description": "Create backup of current mail store",
+      "command": "tar czf {{backup_path}}/mail_backup_$(date +%Y%m%d).tar.gz {{mail_store_path}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Extract Emails",
+      "description": "Extract individual email messages from {{mail_format}} store",
+      "command": "munpack -d {{output_dir}} {{mail_store_path}}/{{mailbox_file}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Parse Headers",
+      "description": "Parse email headers and extract metadata",
+      "command": "formail -s formail -X '' < {{output_dir}}/*.eml",
+      "parameters": {},
+      "required": false
+    },
+    {
+      "name": "Export Results",
+      "description": "Export recovered emails to {{export_format}} format",
+      "command": "readpst -o {{output_dir}} -D {{export_format}} {{mail_store_path}}",
+      "parameters": {},
+      "required": false
+    }
+  ],
+  "configuration": {
+    "risk_level": "medium",
+    "estimated_duration": "10-45 minutes",
+    "prerequisites": ["munpack installed", "readpst installed"],
+    "output_format": "eml/mbox files"
+  }
+}

@@ -1,0 +1,41 @@
+[package]
+name = "datadoctor-sdk"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "High-level SDK for building custom data recovery tools"
+
+[dependencies]
+datadoctor-core = { path = "../core" }
+datadoctor-devices = { path = "../devices" }
+datadoctor-filesystem = { path = "../filesystem" }
+datadoctor-forensic = { path = "../forensic" }
+datadoctor-encryption = { path = "../encryption" }
+tokio.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+chrono.workspace = true
+uuid.workspace = true
+hex.workspace = true
+sha2.workspace = true
+tempfile.workspace = true
+
+[[example]]
+name = "simple_recovery"
+path = "examples/simple_recovery.rs"
+
+[[example]]
+name = "batch_processing"
+path = "examples/batch_processing.rs"
+
+[[example]]
+name = "custom_scanner"
+path = "examples/custom_scanner.rs"
+
+[[example]]
+name = "forensic_workflow"
+path = "examples/forensic_workflow.rs"

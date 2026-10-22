@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Doctor - Advanced Data Recovery</title>
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --accent: #e94560;
+            --accent-hover: #ff6b81;
+            --text-primary: #eaeaea;
+            --text-secondary: #a0a0b0;
+            --text-muted: #6c6c80;
+            --border: #2a2a4a;
+            --card-bg: #1e1e38;
+            --sidebar-bg: #12122a;
+            --input-bg: #1a1a36;
+            --input-border: #333360;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --shadow: 0 4px 24px rgba(0,0,0,0.3);
+            --radius: 8px;
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f0f2f5;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #e8eaed;
+            --accent: #e94560;
+            --accent-hover: #d63851;
+            --text-primary: #1a1a2e;
+            --text-secondary: #555570;
+            --text-muted: #8888a0;
+            --border: #d0d0e0;
+            --card-bg: #ffffff;
+            --sidebar-bg: #1a1a2e;
+            --input-bg: #f5f5fa;
+            --input-border: #c0c0d0;
+            --shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            line-height: 1.5;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        .sidebar {
+            width: 250px;
+            min-width: 250px;
+            background: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border);
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .app-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-logo-icon {
+            font-size: 28px;
+        }
+
+        .app-logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .app-logo-version {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 0;
+        }
+
+        .nav-section-label {
+            padding: 8px 20px 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            font-size: 13.5px;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            user-select: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.04);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(233, 69, 96, 0.1);
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        .nav-icon {
+            font-size: 16px;
+            width: 22px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 6px rgba(46, 204, 113, 0.5);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            min-height: 52px;
+        }
+
+        .top-bar-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .view { display: none; }
+        .view.active { display: block; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.35);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: var(--border);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+        .btn-success:hover:not(:disabled) {
+            background: #27ae60;
+            transform: translateY(-1px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+        .btn-danger:hover:not(:disabled) {
+            background: #c0392b;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-icon {
+            padding: 6px 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .badge-success { background: rgba(46,204,113,0.15); color: var(--success); }
+        .badge-warning { background: rgba(243,156,18,0.15); color: var(--warning); }
+        .badge-danger { background: rgba(231,76,60,0.15); color: var(--danger); }
+        .badge-info { background: rgba(52,152,219,0.15); color: var(--info); }
+        .badge-muted { background: rgba(108,108,128,0.15); color: var(--text-muted); }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 9px 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 10px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        tr:hover td {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .progress-container {
+            margin: 16px 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-item:last-child { border-bottom: none; }
+
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .activity-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .device-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .device-card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+
+        .device-info-main {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .device-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .device-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .device-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .wizard-steps {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+        }
+
+        .wizard-step {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .wizard-step.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .wizard-step.completed {
+            color: var(--success);
+            border-bottom-color: var(--success);
+        }
+
+        .wizard-panel { display: none; }
+        .wizard-panel.active { display: block; }
+
+        .hex-display {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius);
+            padding: 16px;
+            overflow-x: auto;
+            white-space: pre;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .hex-offset { color: var(--info); }
+        .hex-byte { color: var(--text-primary); }
+        .hex-ascii { color: var(--success); }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            font-size: 13px;
+            font-weight: 500;
+            color: #fff;
+            box-shadow: var(--shadow);
+            animation: toast-in 0.3s ease;
+            min-width: 280px;
+        }
+
+        .toast-success { background: var(--success); }
+        .toast-error { background: var(--danger); }
+        .toast-warning { background: var(--warning); }
+        .toast-info { background: var(--info); }
+
+        @keyframes toast-in {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .session-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .session-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .session-header:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .session-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .session-detail-label {
+            color: var(--text-muted);
+        }
+
+        .session-detail-value {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .session-files {
+            display: none;
+            padding: 0 20px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .session-files.expanded {
+            display: block;
+            padding-top: 16px;
+        }
+
+        .preview-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .preview-content {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius);
+            padding: 16px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow: auto;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            word-break: break-all;
+            color: var(--text-secondary);
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .metadata-item {
+            padding: 8px 12px;
+            background: var(--input-bg);
+            border-radius: var(--radius);
+        }
+
+        .metadata-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .metadata-value {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .checkbox-item:hover {
+            border-color: var(--accent);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            accent-color: var(--accent);
+        }
+
+        .multi-select-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius);
+        }
+
+        .multi-select-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 13px;
+        }
+
+        .multi-select-item:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .multi-select-item input[type="checkbox"] {
+            accent-color: var(--accent);
+        }
+
+        .report-preview {
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: var(--radius);
+            padding: 16px;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow: auto;
+            white-space: pre-wrap;
+            color: var(--text-secondary);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .quick-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .quick-action-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .quick-action-icon {
+            font-size: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .status-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+        }
+
+        .status-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .duplicate-group {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            padding: 16px;
+        }
+
+        .duplicate-group-header {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .duplicate-file {
+            padding: 6px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .duplicate-file:last-child { border-bottom: none; }
+
+        .settings-section {
+            margin-bottom: 24px;
+        }
+
+        .settings-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .toggle-switch input { display: none; }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #fff;
+            top: 3px;
+            left: 3px;
+            transition: var(--transition);
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--accent);
+        }
+
+        .toggle-switch input:checked + .toggle-slider::before {
+            transform: translateX(20px);
+        }
+
+        .highlight-lost {
+            background: rgba(231, 76, 60, 0.08);
+        }
+
+        .about-content {
+            text-align: center;
+            padding: 32px;
+        }
+
+        .about-logo {
+            font-size: 64px;
+            margin-bottom: 12px;
+        }
+
+        .about-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .about-version {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .about-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .nav-bottom-actions {
+            padding: 12px 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .raid-health {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .encryption-status {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .encryption-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .threat-result {
+            text-align: center;
+            padding: 24px;
+        }
+
+        .threat-icon {
+            font-size: 64px;
+            margin-bottom: 12px;
+        }
+
+        .image-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="app-logo">
+                <span class="app-logo-icon">&#x1F525;</span>
+                <div>
+                    <div class="app-logo-text">Data Doctor</div>
+                    <div class="app-logo-version">v1.0.0 - Advanced Recovery</div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Main</div>
+            <div class="nav-item active" data-view="dashboard" onclick="navigateTo('dashboard')">
+                <span class="nav-icon">&#x1F3E0;</span> Dashboard
+            </div>
+            <div class="nav-item" data-view="devices" onclick="navigateTo('devices')">
+                <span class="nav-icon">&#x1F4BE;</span> Devices
+            </div>
+            <div class="nav-item" data-view="recovery" onclick="navigateTo('recovery')">
+                <span class="nav-icon">&#x1F504;</span> Recovery
+            </div>
+            <div class="nav-item" data-view="sessions" onclick="navigateTo('sessions')">
+                <span class="nav-icon">&#x1F4C1;</span> Sessions
+            </div>
+
+            <div class="nav-section-label">Analysis</div>
+            <div class="nav-item" data-view="preview" onclick="navigateTo('preview')">
+                <span class="nav-icon">&#x1F441;</span> File Preview
+            </div>
+            <div class="nav-item" data-view="hex" onclick="navigateTo('hex')">
+                <span class="nav-icon">&#x1F50D;</span> Hex Viewer
+            </div>
+            <div class="nav-item" data-view="partitions" onclick="navigateTo('partitions')">
+                <span class="nav-icon">&#x1F5C2;</span> Partitions
+            </div>
+            <div class="nav-item" data-view="diskimage" onclick="navigateTo('diskimage')">
+                <span class="nav-icon">&#x1F4BF;</span> Disk Images
+            </div>
+
+            <div class="nav-section-label">Tools</div>
+            <div class="nav-item" data-view="raid" onclick="navigateTo('raid')">
+                <span class="nav-icon">&#x1F527;</span> RAID Tools
+            </div>
+            <div class="nav-item" data-view="encryption" onclick="navigateTo('encryption')">
+                <span class="nav-icon">&#x1F510;</span> Encryption
+            </div>
+            <div class="nav-item" data-view="threat" onclick="navigateTo('threat')">
+                <span class="nav-icon">&#x1F6E1;</span> Threat Scan
+            </div>
+            <div class="nav-item" data-view="duplicates" onclick="navigateTo('duplicates')">
+                <span class="nav-icon">&#x1F501;</span> Duplicates
+            </div>
+
+            <div class="nav-section-label">Forensic</div>
+            <div class="nav-item" data-view="usn-journal" onclick="navigateTo('usn-journal')">
+                <span class="nav-icon">&#x1F50D;</span> USN Journal
+            </div>
+            <div class="nav-item" data-view="shadow-copies" onclick="navigateTo('shadow-copies')">
+                <span class="nav-icon">&#x1F4F7;</span> Shadow Copies
+            </div>
+            <div class="nav-item" data-view="fragments" onclick="navigateTo('fragments')">
+                <span class="nav-icon">&#x1F9E9;</span> Fragments
+            </div>
+            <div class="nav-item" data-view="file-repair" onclick="navigateTo('file-repair')">
+                <span class="nav-icon">&#x1F527;</span> File Repair
+            </div>
+            <div class="nav-item" data-view="registry" onclick="navigateTo('registry')">
+                <span class="nav-icon">&#x1F4CB;</span> Registry
+            </div>
+
+            <div class="nav-section-label">Chat Recovery</div>
+            <div class="nav-item" data-view="whatsapp" onclick="navigateTo('whatsapp')">
+                <span class="nav-icon">&#x1F4AC;</span> WhatsApp
+            </div>
+            <div class="nav-item" data-view="imessage" onclick="navigateTo('imessage')">
+                <span class="nav-icon">&#x1F4E8;</span> iMessage
+            </div>
+            <div class="nav-item" data-view="signal" onclick="navigateTo('signal')">
+                <span class="nav-icon">&#x1F512;</span> Signal
+            </div>
+            <div class="nav-item" data-view="slack" onclick="navigateTo('slack')">
+                <span class="nav-icon">&#x1F4BC;</span> Slack
+            </div>
+            <div class="nav-item" data-view="browser-history" onclick="navigateTo('browser-history')">
+                <span class="nav-icon">&#x1F310;</span> Browser History
+            </div>
+            <div class="nav-item" data-view="sqlite-carve" onclick="navigateTo('sqlite-carve')">
+                <span class="nav-icon">&#x1F5C4;</span> SQLite Carve
+            </div>
+            <div class="nav-item" data-view="email" onclick="navigateTo('email')">
+                <span class="nav-icon">&#x2709;</span> Email
+            </div>
+
+            <div class="nav-section-label">Enterprise</div>
+            <div class="nav-item" data-view="resume-scan" onclick="navigateTo('resume-scan')">
+                <span class="nav-icon">&#x1F504;</span> Resume Scan
+            </div>
+            <div class="nav-item" data-view="incremental-scan" onclick="navigateTo('incremental-scan')">
+                <span class="nav-icon">&#x1F4C8;</span> Incremental Scan
+            </div>
+            <div class="nav-item" data-view="batch-processing" onclick="navigateTo('batch-processing')">
+                <span class="nav-icon">&#x1F4E6;</span> Batch Processing
+            </div>
+            <div class="nav-item" data-view="case-management" onclick="navigateTo('case-management')">
+                <span class="nav-icon">&#x1F4C2;</span> Case Management
+            </div>
+            <div class="nav-item" data-view="api-server" onclick="navigateTo('api-server')">
+                <span class="nav-icon">&#x1F5A7;</span> API Server
+            </div>
+
+            <div class="nav-section-label">System</div>
+            <div class="nav-item" data-view="reports" onclick="navigateTo('reports')">
+                <span class="nav-icon">&#x1F4CA;</span> Reports
+            </div>
+            <div class="nav-item" data-view="settings" onclick="navigateTo('settings')">
+                <span class="nav-icon">&#x2699;</span> Settings
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="status-indicator">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">System Operational</span>
+            </div>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="top-bar-title" id="viewTitle">Dashboard</div>
+            <div class="top-bar-actions">
+                <button class="btn btn-secondary btn-sm" onclick="refreshDevices()">&#x1F504; Refresh</button>
+                <button class="btn btn-primary btn-sm" onclick="navigateTo('recovery')">&#x1F680; New Recovery</button>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <!-- DASHBOARD VIEW -->
+            <div class="view active" id="view-dashboard">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">&#x1F4BE;</div>
+                        <div class="stat-value" id="statDevices">0</div>
+                        <div class="stat-label">Devices Detected</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">&#x1F4C1;</div>
+                        <div class="stat-value" id="statSessions">0</div>
+                        <div class="stat-label">Recovery Sessions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">&#x1F4C4;</div>
+                        <div class="stat-value" id="statFiles">0</div>
+                        <div class="stat-label">Files Recovered</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">&#x1F4E6;</div>
+                        <div class="stat-value" id="statData">0 B</div>
+                        <div class="stat-label">Data Recovered</div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <div class="section-title">System Status</div>
+                </div>
+                <div class="status-row">
+                    <span class="status-label"><span class="badge badge-success">PASS</span> NIST Compliance</span>
+                    <span id="complianceStatusBadge" class="badge badge-muted">Not Checked</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label"><span class="badge badge-success">ACTIVE</span> Security Protection</span>
+                    <span class="badge badge-success">Operational</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label"><span class="badge badge-success">ACTIVE</span> Threat Detection</span>
+                    <span class="badge badge-success">Operational</span>
+                </div>
+
+                <div style="margin-top: 24px;">
+                    <div class="section-header">
+                        <div class="section-title">Quick Actions</div>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="quick-action-btn" onclick="navigateTo('recovery')">
+                            <span class="quick-action-icon">&#x1F504;</span> Start Recovery
+                        </div>
+                        <div class="quick-action-btn" onclick="navigateTo('devices')">
+                            <span class="quick-action-icon">&#x1F50D;</span> Scan Devices
+                        </div>
+                        <div class="quick-action-btn" onclick="navigateTo('sessions')">
+                            <span class="quick-action-icon">&#x1F4C1;</span> View Sessions
+                        </div>
+                        <div class="quick-action-btn" onclick="navigateTo('threat')">
+                            <span class="quick-action-icon">&#x1F6E1;</span> Threat Scan
+                        </div>
+                        <div class="quick-action-btn" onclick="navigateTo('reports')">
+                            <span class="quick-action-icon">&#x1F4CA;</span> Generate Report
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 8px;">
+                    <div class="section-header">
+                        <div class="section-title">Recent Activity</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body" id="activityLog">
+                            <div class="empty-state">
+                                <div class="empty-state-text">No recent activity</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DEVICES VIEW -->
+            <div class="view" id="view-devices">
+                <div class="section-header">
+                    <div class="section-title">Detected Devices</div>
+                    <button class="btn btn-primary btn-sm" onclick="refreshDevices()">&#x1F504; Scan Devices</button>
+                </div>
+                <div id="deviceList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">&#x1F4BE;</div>
+                        <div class="empty-state-text">Click "Scan Devices" to detect connected storage</div>
+                        <button class="btn btn-primary" onclick="refreshDevices()">Scan Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RECOVERY VIEW -->
+            <div class="view" id="view-recovery">
+                <div class="section-header">
+                    <div class="section-title">Data Recovery Wizard</div>
+                </div>
+
+                <div class="wizard-steps">
+                    <div class="wizard-step active" data-step="1">1. Select Device</div>
+                    <div class="wizard-step" data-step="2">2. Recovery Mode</div>
+                    <div class="wizard-step" data-step="3">3. Filters</div>
+                    <div class="wizard-step" data-step="4">4. Output</div>
+                    <div class="wizard-step" data-step="5">5. Review</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="wizard-panel active" id="wizard-panel-1">
+                            <div class="form-group">
+                                <label class="form-label">Select Device</label>
+                                <select class="form-select" id="recoveryDevice">
+                                    <option value="">-- Scan devices first --</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 24px;">
+                                <button class="btn btn-primary" onclick="wizardNext()">Next &#x2192;</button>
+                            </div>
+                        </div>
+
+                        <div class="wizard-panel" id="wizard-panel-2">
+                            <div class="form-group">
+                                <label class="form-label">Recovery Mode</label>
+                                <select class="form-select" id="recoveryMode">
+                                    <option value="quick">Quick Scan - Fast file system recovery</option>
+                                    <option value="deep">Deep Scan - Thorough sector-by-sector analysis</option>
+                                    <option value="signature">Signature Scan - File signature based recovery</option>
+                                    <option value="filesystem">File System - Reconstruct from filesystem metadata</option>
+                                    <option value="raw">Raw Recovery - Extract all identifiable data</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 24px;">
+                                <button class="btn btn-secondary" onclick="wizardPrev()">&#x2190; Back</button>
+                                <button class="btn btn-primary" onclick="wizardNext()">Next &#x2192;</button>
+                            </div>
+                        </div>
+
+                        <div class="wizard-panel" id="wizard-panel-3">
+                            <div class="form-group">
+                                <label class="form-label">File Types (optional)</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item"><input type="checkbox" value="images" class="filter-type"> Images</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="documents" class="filter-type"> Documents</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="audio" class="filter-type"> Audio</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="video" class="filter-type"> Video</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="archives" class="filter-type"> Archives</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="emails" class="filter-type"> Emails</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="databases" class="filter-type"> Databases</label>
+                                    <label class="checkbox-item"><input type="checkbox" value="executables" class="filter-type"> Executables</label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Min Size (MB)</label>
+                                    <input type="number" class="form-input" id="filterMinSize" placeholder="0" min="0">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Max Size (MB)</label>
+                                    <input type="number" class="form-input" id="filterMaxSize" placeholder="No limit" min="0">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Date From</label>
+                                    <input type="date" class="form-input" id="filterDateFrom">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Date To</label>
+                                    <input type="date" class="form-input" id="filterDateTo">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Name Pattern (regex)</label>
+                                <input type="text" class="form-input" id="filterNamePattern" placeholder="e.g. *.jpg, report_*">
+                            </div>
+                            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 24px;">
+                                <button class="btn btn-secondary" onclick="wizardPrev()">&#x2190; Back</button>
+                                <button class="btn btn-primary" onclick="wizardNext()">Next &#x2192;</button>
+                            </div>
+                        </div>
+
+                        <div class="wizard-panel" id="wizard-panel-4">
+                            <div class="form-group">
+                                <label class="form-label">Output Directory</label>
+                                <input type="text" class="form-input" id="recoveryOutputDir" placeholder="/path/to/output" value="./recovered_files">
+                            </div>
+                            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 24px;">
+                                <button class="btn btn-secondary" onclick="wizardPrev()">&#x2190; Back</button>
+                                <button class="btn btn-primary" onclick="wizardNext()">Next &#x2192;</button>
+                            </div>
+                        </div>
+
+                        <div class="wizard-panel" id="wizard-panel-5">
+                            <div style="margin-bottom: 20px;">
+                                <div class="form-label">Recovery Summary</div>
+                                <div id="recoverySummary" style="padding: 16px; background: var(--input-bg); border-radius: var(--radius); font-size: 13px; line-height: 2;"></div>
+                            </div>
+                            <div id="recoveryProgressArea" style="display: none;">
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="recoveryProgressFill" style="width: 0%"></div>
+                                    </div>
+                                    <div class="progress-label">
+                                        <span id="recoveryProgressText">Starting...</span>
+                                        <span id="recoveryProgressPct">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 24px;">
+                                <button class="btn btn-secondary" onclick="wizardPrev()" id="recoveryBackBtn">&#x2190; Back</button>
+                                <button class="btn btn-success" onclick="executeRecovery()" id="recoveryStartBtn">&#x1F680; Start Recovery</button>
+                                <button class="btn btn-danger" onclick="cancelRecovery()" id="recoveryCancelBtn" style="display: none;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SESSIONS VIEW -->
+            <div class="view" id="view-sessions">
+                <div class="section-header">
+                    <div class="section-title">Recovery Sessions</div>
+                    <button class="btn btn-primary btn-sm" onclick="loadSessions()">&#x1F504; Refresh</button>
+                </div>
+                <div id="sessionsList">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">&#x1F4C1;</div>
+                        <div class="empty-state-text">No recovery sessions found</div>
+                        <button class="btn btn-primary" onclick="loadSessions()">Load Sessions</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILE PREVIEW VIEW -->
+            <div class="view" id="view-preview">
+                <div class="section-header">
+                    <div class="section-title">File Preview</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">File Path</label>
+                                <input type="text" class="form-input" id="previewPath" placeholder="/path/to/file">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="doPreviewFile()" style="width: 100%;">Preview</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="previewResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- HEX VIEWER VIEW -->
+            <div class="view" id="view-hex">
+                <div class="section-header">
+                    <div class="section-title">Hex Viewer</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label class="form-label">File / Device Path</label>
+                                <input type="text" class="form-input" id="hexPath" placeholder="/path/to/file">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Offset (hex or decimal)</label>
+                                <input type="text" class="form-input" id="hexOffset" placeholder="0x0 or 0" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Length (bytes)</label>
+                                <input type="number" class="form-input" id="hexLength" placeholder="256" value="256" min="1" max="4096">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+                            <button class="btn btn-primary" onclick="doHexView()">Read</button>
+                            <button class="btn btn-secondary" onclick="hexPrevPage()">&#x2190; Prev Page</button>
+                            <button class="btn btn-secondary" onclick="hexNextPage()">Next Page &#x2192;</button>
+                        </div>
+                        <div class="hex-display" id="hexOutput">
+                            <div class="empty-state">Enter a path and click "Read" to view hex data</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARTITIONS VIEW -->
+            <div class="view" id="view-partitions">
+                <div class="section-header">
+                    <div class="section-title">Partition Scanner</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Device</label>
+                                <select class="form-select" id="partitionDevice">
+                                    <option value="">-- Scan devices first --</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="doScanPartitions()" style="width: 100%;">Scan Partitions</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="partitionResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- DISK IMAGES VIEW -->
+            <div class="view" id="view-diskimage">
+                <div class="section-header">
+                    <div class="section-title">Disk Image Manager</div>
+                </div>
+                <div class="card">
+                    <div class="card-header">Open Existing Image</div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Image Path</label>
+                                <input type="text" class="form-input" id="imagePath" placeholder="/path/to/image.dd or image.e01">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="doGetImageInfo()" style="width: 100%;">Open</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="imageInfoResults" style="margin-top: 16px;"></div>
+
+                <div class="card" style="margin-top: 16px;">
+                    <div class="card-header">Create Image from Device</div>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Source Device</label>
+                                <select class="form-select" id="imageSourceDevice">
+                                    <option value="">-- Scan devices first --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Output Path</label>
+                                <input type="text" class="form-input" id="imageOutputPath" placeholder="/path/to/output.dd">
+                            </div>
+                        </div>
+                        <button class="btn btn-success" onclick="showToast('Image creation requires dd or specialized tool', 'info')">Create Image</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAID TOOLS VIEW -->
+            <div class="view" id="view-raid">
+                <div class="section-header">
+                    <div class="section-title">RAID Analysis Tools</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Select RAID Member Disks</label>
+                            <div class="multi-select-list" id="raidDiskSelect">
+                                <div class="empty-state" style="padding: 16px;">
+                                    <div class="empty-state-text">Scan devices first to select RAID members</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" onclick="doDetectRaid()">Detect RAID</button>
+                            <button class="btn btn-success" onclick="doReconstructRaid()" id="reconstructRaidBtn" disabled>Reconstruct Array</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="raidResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- ENCRYPTION VIEW -->
+            <div class="view" id="view-encryption">
+                <div class="section-header">
+                    <div class="section-title">Encryption Detection</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Device</label>
+                                <select class="form-select" id="encryptionDevice">
+                                    <option value="">-- Scan devices first --</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="doCheckEncryption()" style="width: 100%;">Detect Encryption</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="encryptionResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- THREAT SCAN VIEW -->
+            <div class="view" id="view-threat">
+                <div class="section-header">
+                    <div class="section-title">Threat Scanner</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">File or Directory Path</label>
+                                <input type="text" class="form-input" id="threatPath" placeholder="/path/to/scan">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="doThreatScan()" style="width: 100%;">Scan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="threatResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- DUPLICATES VIEW -->
+            <div class="view" id="view-duplicates">
+                <div class="section-header">
+                    <div class="section-title">Duplicate Finder</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Directory Path</label>
+                                <input type="text" class="form-input" id="duplicatesPath" placeholder="/path/to/directory">
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="doFindDuplicates()" style="width: 100%;">Scan for Duplicates</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="duplicatesResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- REPORTS VIEW -->
+            <div class="view" id="view-reports">
+                <div class="section-header">
+                    <div class="section-title">Report Generator</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label class="form-label">Session</label>
+                                <select class="form-select" id="reportSession">
+                                    <option value="">-- Load sessions first --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Format</label>
+                                <select class="form-select" id="reportFormat">
+                                    <option value="csv">CSV</option>
+                                    <option value="html">HTML</option>
+                                    <option value="text">Text</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Output Path</label>
+                                <input type="text" class="form-input" id="reportOutputPath" placeholder="/path/to/report.csv">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary" onclick="loadSessionsForReport()">Load Sessions</button>
+                            <button class="btn btn-primary" onclick="doGenerateReport()">Generate Report</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="reportResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- SETTINGS VIEW -->
+            <div class="view" id="view-settings">
+                <div class="section-header">
+                    <div class="section-title">Settings</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="settings-section">
+                            <div class="settings-section-title">Compliance</div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <button class="btn btn-primary" onclick="doCheckCompliance()">Run Compliance Check</button>
+                                <span id="complianceResult" class="badge badge-muted">Not checked</span>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <div class="settings-section-title">Appearance</div>
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <span style="font-size: 13px;">Dark Theme</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="themeToggle" checked onchange="toggleTheme()">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <div class="settings-section-title">Data Directory</div>
+                            <div class="form-group">
+                                <input type="text" class="form-input" id="dataDirPath" value="./datadoctor_data" style="max-width: 400px;">
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <div class="settings-section-title">Signature Database</div>
+                            <button class="btn btn-secondary btn-sm" onclick="loadSignatureCounts()">Load Signature Counts</button>
+                            <div id="signatureCounts" style="margin-top: 12px;"></div>
+                        </div>
+
+                        <div class="settings-section">
+                            <div class="settings-section-title">About</div>
+                            <div class="about-content">
+                                <div class="about-logo">&#x1F525;</div>
+                                <div class="about-name">Data Doctor</div>
+                                <div class="about-version">Version 1.0.0</div>
+                                <div class="about-desc">Advanced cross-platform data recovery software with forensic-grade precision. Built with Tauri and Rust.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- USN JOURNAL VIEW -->
+            <div class="view" id="view-usn-journal">
+                <div class="section-header">
+                    <div class="section-title">USN Journal Parser</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Device Path</label>
+                                <select class="form-select" id="usn-device">
+                                    <option value="">-- Scan devices first --</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="parseUsnJournal()" style="width: 100%;">Parse USN Journal</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="usnResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- SHADOW COPIES VIEW -->
+            <div class="view" id="view-shadow-copies">
+                <div class="section-header">
+                    <div class="section-title">Shadow Copy Explorer</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Device Path</label>
+                                <select class="form-select" id="shadow-device">
+                                    <option value="">-- Scan devices first --</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="listShadowCopies()" style="width: 100%;">List Shadow Copies</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="shadowResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- FRAGMENTS VIEW -->
+            <div class="view" id="view-fragments">
+                <div class="section-header">
+                    <div class="section-title">File Fragment Scanner</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Device Path</label>
+                                <select class="form-select" id="fragment-device">
+                                    <option value="">-- Scan devices first --</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button class="btn btn-primary" onclick="scanFragments()" style="width: 100%;">Scan Fragments</button>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 8px;">
+                            <label class="form-label">File Types (optional)</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item"><input type="checkbox" value="images" class="fragment-type"> Images</label>
+                                <label class="checkbox-item"><input type="checkbox" value="documents" class="fragment-type"> Documents</label>
+                                <label class="checkbox-item"><input type="checkbox" value="audio" class="fragment-type"> Audio</label>
+                                <label class="checkbox-item"><input type="checkbox" value="video" class="fragment-type"> Video</label>
+                                <label class="checkbox-item"><input type="checkbox" value="databases" class="fragment-type"> Databases</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="fragmentResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- FILE REPAIR VIEW -->
+            <div class="view" id="view-file-repair">
+                <div class="section-header">
+                    <div class="section-title">File Repair</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">File Path</label>
+                                <input type="text" class="form-input" id="repair-path" placeholder="/path/to/damaged/file">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Repair Mode</label>
+                                <select class="form-select" id="repair-mode">
+                                    <option value="auto">Auto-Detect</option>
+                                    <option value="header">Header Reconstruction</option>
+                                    <option value="trailer">Trailer Repair</option>
+                                    <option value="full">Full Reconstruction</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Output Path (optional)</label>
+                            <input type="text" class="form-input" id="repair-output" placeholder="/path/to/repaired/file">
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" onclick="repairFile()">Repair File</button>
+                            <button class="btn btn-secondary" onclick="analyzeFile()">Analyze First</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="repairResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- REGISTRY VIEW -->
+            <div class="view" id="view-registry">
+                <div class="section-header">
+                    <div class="section-title">Registry Hive Parser</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Registry Hive Path</label>
+                                <input type="text" class="form-input" id="registry-path" placeholder="/path/to/NTUSER.DAT or SYSTEM">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Registry Key</label>
+                                <input type="text" class="form-input" id="registry-key" placeholder="Software\\Microsoft\\Windows\\CurrentVersion">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" onclick="parseRegistry()">Parse Registry</button>
+                            <button class="btn btn-secondary" onclick="listRegistryKeys()">List Keys</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="registryResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- WHATSAPP VIEW -->
+            <div class="view" id="view-whatsapp">
+                <div class="section-header">
+                    <div class="section-title">WhatsApp Recovery</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Source Path</label>
+                                <input type="text" class="form-input" id="whatsapp-path" placeholder="/path/to/WhatsApp or device backup">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Output Directory</label>
+                                <input type="text" class="form-input" id="whatsapp-output" placeholder="/path/to/output">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Recovery Options</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item"><input type="checkbox" id="whatsapp-messages" checked> Messages</label>
+                                <label class="checkbox-item"><input type="checkbox" id="whatsapp-media" checked> Media</label>
+                                <label class="checkbox-item"><input type="checkbox" id="whatsapp-contacts"> Contacts</label>
+                                <label class="checkbox-item"><input type="checkbox" id="whatsapp-deleted"> Deleted Messages</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="recoverWhatsApp()">Recover WhatsApp</button>
+                    </div>
+                </div>
+                <div id="whatsappResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- IMESSAGE VIEW -->
+            <div class="view" id="view-imessage">
+                <div class="section-header">
+                    <div class="section-title">iMessage Recovery</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Chat Database Path</label>
+                                <input type="text" class="form-input" id="imessage-path" placeholder="/path/to/chat.db or iTunes backup">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Output Directory</label>
+                                <input type="text" class="form-input" id="imessage-output" placeholder="/path/to/output">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Filter by Contact (optional)</label>
+                            <input type="text" class="form-input" id="imessage-contact" placeholder="Phone number or email">
+                        </div>
+                        <button class="btn btn-primary" onclick="recoverIMessage()">Recover iMessage</button>
+                    </div>
+                </div>
+                <div id="imessageResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- SIGNAL VIEW -->
+            <div class="view" id="view-signal">
+                <div class="section-header">
+                    <div class="section-title">Signal Recovery</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Signal Database Path</label>
+                                <input type="text" class="form-input" id="signal-path" placeholder="/path/to/Signal database">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Output Directory</label>
+                                <input type="text" class="form-input" id="signal-output" placeholder="/path/to/output">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Decryption Key (optional)</label>
+                            <input type="text" class="form-input" id="signal-key" placeholder="Hex key for encrypted DB">
+                        </div>
+                        <button class="btn btn-primary" onclick="recoverSignal()">Recover Signal</button>
+                    </div>
+                </div>
+                <div id="signalResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- SLACK VIEW -->
+            <div class="view" id="view-slack">
+                <div class="section-header">
+                    <div class="section-title">Slack Recovery</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Slack Data Path</label>
+                                <input type="text" class="form-input" id="slack-path" placeholder="/path/to/Slack workspace data">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Output Directory</label>
+                                <input type="text" class="form-input" id="slack-output" placeholder="/path/to/output">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Workspace (optional)</label>
+                            <input type="text" class="form-input" id="slack-workspace" placeholder="Workspace name or ID">
+                        </div>
+                        <button class="btn btn-primary" onclick="recoverSlack()">Recover Slack</button>
+                    </div>
+                </div>
+                <div id="slackResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- BROWSER HISTORY VIEW -->
+            <div class="view" id="view-browser-history">
+                <div class="section-header">
+                    <div class="section-title">Browser History Recovery</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Browser</label>
+                                <select class="form-select" id="browser-type">
+                                    <option value="chrome">Google Chrome</option>
+                                    <option value="firefox">Mozilla Firefox</option>
+                                    <option value="safari">Safari</option>
+                                    <option value="edge">Microsoft Edge</option>
+                                    <option value="brave">Brave</option>
+                                    <option value="all">All Browsers</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Profile Path (optional)</label>
+                                <input type="text" class="form-input" id="browser-path" placeholder="Auto-detect if empty">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Output Directory</label>
+                            <input type="text" class="form-input" id="browser-output" placeholder="/path/to/output">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Recovery Options</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item"><input type="checkbox" id="browser-history-opt" checked> History</label>
+                                <label class="checkbox-item"><input type="checkbox" id="browser-bookmarks" checked> Bookmarks</label>
+                                <label class="checkbox-item"><input type="checkbox" id="browser-cookies"> Cookies</label>
+                                <label class="checkbox-item"><input type="checkbox" id="browser-passwords"> Saved Passwords</label>
+                                <label class="checkbox-item"><input type="checkbox" id="browser-downloads"> Downloads</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="recoverBrowserHistory()">Recover Browser Data</button>
+                    </div>
+                </div>
+                <div id="browserResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- SQLITE CARVE VIEW -->
+            <div class="view" id="view-sqlite-carve">
+                <div class="section-header">
+                    <div class="section-title">SQLite Carver</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Source File / Device</label>
+                                <input type="text" class="form-input" id="sqlite-path" placeholder="/path/to/database.db or device image">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Table Name (optional)</label>
+                                <input type="text" class="form-input" id="sqlite-table" placeholder="Leave empty to scan all tables">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Output Directory</label>
+                            <input type="text" class="form-input" id="sqlite-output" placeholder="/path/to/output">
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" onclick="carveSqlite()">Carve SQLite Data</button>
+                            <button class="btn btn-secondary" onclick="listSqliteTables()">List Tables</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="sqliteResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- EMAIL VIEW -->
+            <div class="view" id="view-email">
+                <div class="section-header">
+                    <div class="section-title">Email Recovery</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Email Client</label>
+                                <select class="form-select" id="email-client">
+                                    <option value="auto">Auto-Detect</option>
+                                    <option value="outlook">Microsoft Outlook</option>
+                                    <option value="thunderbird">Mozilla Thunderbird</option>
+                                    <option value="apple_mail">Apple Mail</option>
+                                    <option value="pst">PST File</option>
+                                    <option value="mbox">MBOX File</option>
+                                    <option value="eml">EML Files</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Data Path</label>
+                                <input type="text" class="form-input" id="email-path" placeholder="/path/to/mail/data">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Output Directory</label>
+                            <input type="text" class="form-input" id="email-output" placeholder="/path/to/output">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Recovery Options</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item"><input type="checkbox" id="email-inbox" checked> Inbox</label>
+                                <label class="checkbox-item"><input type="checkbox" id="email-sent" checked> Sent</label>
+                                <label class="checkbox-item"><input type="checkbox" id="email-deleted"> Deleted</label>
+                                <label class="checkbox-item"><input type="checkbox" id="email-attachments" checked> Attachments</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="recoverEmail()">Recover Emails</button>
+                    </div>
+                </div>
+                <div id="emailResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- RESUME SCAN VIEW -->
+            <div class="view" id="view-resume-scan">
+                <div class="section-header">
+                    <div class="section-title">Resume Scan</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Session ID</label>
+                                <input type="text" class="form-input" id="resume-session-id" placeholder="Session ID to resume">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Output Directory</label>
+                                <input type="text" class="form-input" id="resume-output" placeholder="/path/to/output">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary" onclick="loadResumeableSessions()">Load Sessions</button>
+                            <button class="btn btn-primary" onclick="resumeScan()">Resume Scan</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="resumeScanResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- INCREMENTAL SCAN VIEW -->
+            <div class="view" id="view-incremental-scan">
+                <div class="section-header">
+                    <div class="section-title">Incremental Scan</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Base Session ID</label>
+                                <input type="text" class="form-input" id="incremental-session" placeholder="Previous session ID">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Device</label>
+                                <select class="form-select" id="incremental-device">
+                                    <option value="">-- Scan devices first --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Output Directory</label>
+                            <input type="text" class="form-input" id="incremental-output" placeholder="/path/to/output">
+                        </div>
+                        <button class="btn btn-primary" onclick="runIncrementalScan()">Run Incremental Scan</button>
+                    </div>
+                </div>
+                <div id="incrementalResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- BATCH PROCESSING VIEW -->
+            <div class="view" id="view-batch-processing">
+                <div class="section-header">
+                    <div class="section-title">Batch Processing</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Scan Type</label>
+                            <select class="form-select" id="batch-scan-type">
+                                <option value="quick">Quick Scan</option>
+                                <option value="deep">Deep Scan</option>
+                                <option value="signature">Signature Scan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Device Paths (one per line)</label>
+                            <textarea class="form-textarea" id="batch-devices" placeholder="/dev/sda&#10;/dev/sdb&#10;/dev/sdc"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Output Base Directory</label>
+                            <input type="text" class="form-input" id="batch-output" placeholder="/path/to/batch_output">
+                        </div>
+                        <div id="batchProgress" style="display: none;">
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="batchProgressFill" style="width: 0%"></div>
+                                </div>
+                                <div class="progress-label">
+                                    <span id="batchProgressText">Starting...</span>
+                                    <span id="batchProgressPct">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-primary" onclick="startBatchProcessing()">Start Batch</button>
+                            <button class="btn btn-danger" onclick="cancelBatch()" id="batchCancelBtn" style="display: none;">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="batchResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- CASE MANAGEMENT VIEW -->
+            <div class="view" id="view-case-management">
+                <div class="section-header">
+                    <div class="section-title">Case Management</div>
+                    <button class="btn btn-primary btn-sm" onclick="loadCases()">&#x1F504; Refresh</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">Create New Case</div>
+                    <div class="card-body">
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label class="form-label">Case Name</label>
+                                <input type="text" class="form-input" id="case-name" placeholder="Case #2024-001">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Examiner</label>
+                                <input type="text" class="form-input" id="case-examiner" placeholder="Examiner name">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Priority</label>
+                                <select class="form-select" id="case-priority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-textarea" id="case-description" placeholder="Case description and notes"></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="createCase()">Create Case</button>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 16px;">
+                    <div class="card-header">Existing Cases</div>
+                    <div class="card-body" id="caseList">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">&#x1F4C2;</div>
+                            <div class="empty-state-text">No cases created yet</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="caseResults" style="margin-top: 16px;"></div>
+            </div>
+
+            <!-- API SERVER VIEW -->
+            <div class="view" id="view-api-server">
+                <div class="section-header">
+                    <div class="section-title">API Server</div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label class="form-label">Host</label>
+                                <input type="text" class="form-input" id="api-host" value="127.0.0.1">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Port</label>
+                                <input type="number" class="form-input" id="api-port" value="8080">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">API Key (optional)</label>
+                                <input type="text" class="form-input" id="api-key" placeholder="Leave empty for no auth">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Enabled Endpoints</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item"><input type="checkbox" id="api-devices" checked> Devices</label>
+                                <label class="checkbox-item"><input type="checkbox" id="api-recovery" checked> Recovery</label>
+                                <label class="checkbox-item"><input type="checkbox" id="api-sessions" checked> Sessions</label>
+                                <label class="checkbox-item"><input type="checkbox" id="api-forensic" checked> Forensic</label>
+                                <label class="checkbox-item"><input type="checkbox" id="api-reports"> Reports</label>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <button class="btn btn-success" onclick="startApiServer()" id="apiStartBtn">Start Server</button>
+                            <button class="btn btn-danger" onclick="stopApiServer()" id="apiStopBtn" style="display: none;">Stop Server</button>
+                            <span id="apiStatus" class="badge badge-muted">Stopped</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="apiServerResults" style="margin-top: 16px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script type="module" src="/main.js"></script>
+</body>
+</html>

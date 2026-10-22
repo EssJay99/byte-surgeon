@@ -1,0 +1,20 @@
+[package]
+name = "tle-plugins"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["lib", "cdylib"]
+
+[[example]]
+name = "hello_plugin"
+crate-type = ["cdylib"]
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+libloading = "0.8"
+thiserror = "1.0"
+
+[dev-dependencies]
+tempfile = "3.10"

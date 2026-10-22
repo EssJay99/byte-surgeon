@@ -1,0 +1,22 @@
+[package]
+name = "datadoctor-media"
+version = "1.0.0"
+edition = "2021"
+authors = ["Data Doctor Team"]
+description = "Media recovery for video, audio, and images"
+
+[dependencies]
+datadoctor-core = { path = "../core" }
+datadoctor-filesystem = { path = "../filesystem" }
+tokio = { workspace = true }
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+chrono = { workspace = true }
+rayon = { workspace = true }
+parking_lot = { workspace = true }
+byteorder = { workspace = true }
+image = "0.24"

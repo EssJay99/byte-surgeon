@@ -1,0 +1,13 @@
+{
+  "metadata": {
+    "name": "hello_plugin",
+    "version": "1.0.0",
+    "description": "A simple greeting plugin that demonstrates the plugin system",
+    "author": "TLE Team",
+    "entry_point": "create_plugin"
+  },
+  "settings": {
+    "default_greeting": "Hello",
+    "include_timestamp": false
+  }
+}

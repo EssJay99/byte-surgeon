@@ -1,0 +1,133 @@
+name: Performance Benchmarks
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  benchmark:
+    name: Run Benchmarks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: bench-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            bench-cargo-
+
+      - name: Install cargo-criterion
+        run: cargo install cargo-criterion --locked
+
+      - name: Run benchmarks (current branch)
+        run: |
+          mkdir -p bench-results
+          cargo bench --workspace --all-features -- --output-format bencher | tee bench-results/current.txt || true
+
+      - name: Checkout main branch for comparison
+        if: github.event_name == 'pull_request'
+        run: |
+          git stash
+          git checkout main
+          git stash pop || true
+
+      - name: Run benchmarks (main branch)
+        if: github.event_name == 'pull_request'
+        run: |
+          cargo bench --workspace --all-features -- --output-format bencher | tee bench-results/main.txt || true
+
+      - name: Compare benchmarks
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## Benchmark Comparison" > bench-results/comparison.md
+          echo "" >> bench-results/comparison.md
+          echo "| Benchmark | Main (ns/iter) | Current (ns/iter) | Change | Status |" >> bench-results/comparison.md
+          echo "|-----------|-----------------|-------------------|--------|--------|" >> bench-results/comparison.md
+
+          if [ -f bench-results/main.txt ] && [ -f bench-results/current.txt ]; then
+            python3 -c "
+          import re, sys
+
+          def parse_benchmarks(filepath):
+              results = {}
+              with open(filepath) as f:
+                  for line in f:
+                      match = re.search(r'test (.+?) \.\.\. bench:\s+([\d,]+) ns/iter', line)
+                      if match:
+                          name = match.group(1)
+                          value = int(match.group(2).replace(',', ''))
+                          results[name] = value
+              return results
+
+          main_results = parse_benchmarks('bench-results/main.txt')
+          current_results = parse_benchmarks('bench-results/current.txt')
+
+          all_benchmarks = sorted(set(list(main_results.keys()) + list(current_results.keys())))
+
+          regressions = 0
+          for name in all_benchmarks:
+              main_val = main_results.get(name, None)
+              curr_val = current_results.get(name, None)
+              if main_val and curr_val:
+                  change = ((curr_val - main_val) / main_val) * 100
+                  if change > 10:
+                      status = 'REGRESSION'
+                      regressions += 1
+                  elif change < -10:
+                      status = 'IMPROVED'
+                  else:
+                      status = 'OK'
+                  print(f'| {name} | {main_val:,} | {curr_val:,} | {change:+.1f}% | {status} |')
+              else:
+                  main_s = f'{main_val:,}' if main_val else 'N/A'
+                  curr_s = f'{curr_val:,}' if curr_val else 'N/A'
+                  print(f'| {name} | {main_s} | {curr_s} | N/A | NEW/REMOVED |')
+
+          if regressions > 0:
+              print(f'\n:warning: {regressions} benchmark regression(s) detected!', file=sys.stderr)
+              sys.exit(1)
+          " >> bench-results/comparison.md
+          fi
+
+      - name: Upload benchmark results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: bench-results/
+          retention-days: 30
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let comparison = '';
+            try {
+              comparison = fs.readFileSync('bench-results/comparison.md', 'utf8');
+            } catch (e) {
+              comparison = 'Benchmark comparison could not be generated.';
+            }
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comparison
+            });

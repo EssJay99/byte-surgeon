@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "name": "advanced_forensics_plugin",
+    "version": "1.0.0",
+    "description": "Advanced forensic timeline analysis with MACB timestamp correlation, suspicious activity clustering, and anomaly detection.",
+    "author": "TLE Team",
+    "entry_point": "create_plugin"
+  },
+  "settings": {
+    "cluster_window_minutes": 5,
+    "min_cluster_size": 3,
+    "anomaly_severity_threshold": "medium",
+    "include_builtin_samples": true
+  }
+}

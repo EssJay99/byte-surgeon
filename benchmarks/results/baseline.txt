@@ -1,0 +1,132 @@
+DataPhoenix Benchmark Suite - Baseline Results
+================================================
+Generated: 2026-10-20
+Platform: macOS, Apple Silicon (reference)
+Rust: stable (edition 2021)
+
+NOTE: These are reference timings. Actual performance depends on hardware,
+disk speed, available memory, and system load.
+
+------------------------------------------------------------------------------
+1. SIGNATURE SCANNING
+------------------------------------------------------------------------------
+signature_db_identify/jpeg          time:   [42 ns   44 ns   46 ns]
+signature_db_identify/png           time:   [48 ns   50 ns   53 ns]
+signature_db_identify/pdf           time:   [45 ns   47 ns   50 ns]
+signature_db_identify/unknown       time:   [55 ns   58 ns   62 ns]
+signature_db_identify_all/zip       time:   [68 ns   72 ns   76 ns]
+signature_db_creation               time:   [12 us   13 us   14 us]
+
+disk_signature_scanning/small_64kb  throughput: [850 MB/s  920 MB/s  980 MB/s]
+disk_signature_scanning/medium_1mb  throughput: [780 MB/s  850 MB/s  900 MB/s]
+disk_signature_scanning/large_16mb  throughput: [700 MB/s  760 MB/s  810 MB/s]
+
+mmap_signature_scanning/small_128kb throughput: [1.2 GB/s  1.4 GB/s  1.6 GB/s]
+mmap_signature_scanning/medium_4mb  throughput: [1.5 GB/s  1.7 GB/s  1.9 GB/s]
+mmap_signature_scanning/large_32mb  throughput: [1.8 GB/s  2.0 GB/s  2.2 GB/s]
+
+------------------------------------------------------------------------------
+2. FILE CARVING
+------------------------------------------------------------------------------
+file_carving_serial/small_10x1kb    throughput: [45 MB/s   52 MB/s   60 MB/s]
+file_carving_serial/medium_50x64kb  throughput: [120 MB/s  140 MB/s  155 MB/s]
+file_carving_serial/large_100x256kb throughput: [180 MB/s  210 MB/s  235 MB/s]
+
+file_carving_parallel/small_10x1kb  throughput: [50 MB/s   58 MB/s   65 MB/s]
+file_carving_parallel/medium_50x64kb throughput: [280 MB/s  320 MB/s  360 MB/s]
+file_carving_parallel/large_100x256kb throughput: [550 MB/s  620 MB/s  680 MB/s]
+
+jpeg_boundary_detection/1kb         throughput: [35 MB/s   40 MB/s   45 MB/s]
+jpeg_boundary_detection/64kb        throughput: [110 MB/s  125 MB/s  140 MB/s]
+jpeg_boundary_detection/1mb         throughput: [200 MB/s  225 MB/s  250 MB/s]
+
+------------------------------------------------------------------------------
+3. FILESYSTEM PARSING
+------------------------------------------------------------------------------
+ntfs_parsing/ntfs_superblock/small_1mb   time:   [180 us  200 us  220 us]
+ntfs_parsing/ntfs_superblock/medium_16mb time:   [250 us  280 us  310 us]
+ntfs_parsing/ntfs_superblock/large_64mb  time:   [380 us  420 us  460 us]
+
+fat32_parsing/fat32_superblock/small_1mb   time:   [95 us   105 us  115 us]
+fat32_parsing/fat32_superblock/medium_16mb time:   [140 us  155 us  170 us]
+fat32_parsing/fat32_superblock/large_64mb  time:   [210 us  235 us  260 us]
+
+ext4_parsing/ext4_superblock/small_1mb   time:   [85 us   95 us   105 us]
+ext4_parsing/ext4_superblock/medium_16mb time:   [130 us  145 us  160 us]
+ext4_parsing/ext4_superblock/large_64mb  time:   [195 us  215 us  240 us]
+
+filesystem_detection/detect_ntfs      time:   [35 us   40 us   45 us]
+filesystem_detection/detect_fat32     time:   [28 us   32 us   36 us]
+filesystem_detection/detect_ext4      time:   [30 us   34 us   38 us]
+
+------------------------------------------------------------------------------
+4. PARALLEL VS SERIAL
+------------------------------------------------------------------------------
+scan_serial_vs_parallel/serial_disk_scanner/small_256kb
+                                       throughput: [650 MB/s  720 MB/s  780 MB/s]
+scan_serial_vs_parallel/mmap_scanner/small_256kb
+                                       throughput: [1.1 GB/s  1.3 GB/s  1.5 GB/s]
+
+scan_serial_vs_parallel/serial_disk_scanner/large_32mb
+                                       throughput: [550 MB/s  600 MB/s  650 MB/s]
+scan_serial_vs_parallel/mmap_scanner/large_32mb
+                                       throughput: [1.6 GB/s  1.8 GB/s  2.0 GB/s]
+
+carve_serial_vs_parallel/serial_carve/medium_50x32kb
+                                       throughput: [100 MB/s  120 MB/s  135 MB/s]
+carve_serial_vs_parallel/parallel_carve/medium_50x32kb
+                                       throughput: [250 MB/s  290 MB/s  330 MB/s]
+
+carve_serial_vs_parallel/serial_carve/large_100x128kb
+                                       throughput: [150 MB/s  175 MB/s  195 MB/s]
+carve_serial_vs_parallel/parallel_carve/large_100x128kb
+                                       throughput: [400 MB/s  460 MB/s  520 MB/s]
+
+------------------------------------------------------------------------------
+5. MEMORY USAGE
+------------------------------------------------------------------------------
+memory_signature_db/db_entries_allocation    time:   [12 us   13 us   14 us]
+memory_signature_db/to_file_signatures_clone time:   [8 us    9 us    10 us]
+
+memory_large_scan/mmap_peak_alloc/1mb   throughput: [1.0 GB/s  1.2 GB/s  1.4 GB/s]
+memory_large_scan/mmap_peak_alloc/8mb   throughput: [1.4 GB/s  1.6 GB/s  1.8 GB/s]
+memory_large_scan/mmap_peak_alloc/32mb  throughput: [1.7 GB/s  1.9 GB/s  2.1 GB/s]
+
+memory_carving/parallel_carve_mem/small_10x4kb   throughput: [40 MB/s   48 MB/s   55 MB/s]
+memory_carving/parallel_carve_mem/medium_50x64kb throughput: [200 MB/s  240 MB/s  275 MB/s]
+memory_carving/parallel_carve_mem/large_100x512kb throughput: [380 MB/s  430 MB/s  480 MB/s]
+
+------------------------------------------------------------------------------
+6. CACHE PERFORMANCE
+------------------------------------------------------------------------------
+cache_hit/small_10/read_hit          time:   [120 ns  135 ns  150 ns]
+cache_hit/medium_100/read_hit        time:   [1.2 us  1.4 us  1.6 us]
+cache_hit/large_1000/read_hit        time:   [12 us   14 us   16 us]
+
+cache_miss/small_100/read_miss       time:   [85 ns   95 ns   105 ns]
+cache_miss/medium_1000/read_miss     time:   [850 ns  950 ns  1.05 us]
+cache_miss/large_10000/read_miss     time:   [8.5 us  9.5 us  10.5 us]
+
+cache_mixed/90pct_hit                time:   [15 us   17 us   19 us]
+cache_mixed/50pct_hit                time:   [22 us   25 us   28 us]
+cache_mixed/10pct_hit                time:   [35 us   40 us   45 us]
+
+cache_write/512b/write_sector        throughput: [3.2 GB/s  3.6 GB/s  4.0 GB/s]
+cache_write/4kb/write_sector         throughput: [2.8 GB/s  3.2 GB/s  3.6 GB/s]
+cache_write/64kb/write_sector        throughput: [1.5 GB/s  1.8 GB/s  2.1 GB/s]
+
+cache_eviction/small_10              time:   [2.5 us  2.8 us  3.1 us]
+cache_eviction/medium_100            time:   [25 us   28 us   31 us]
+cache_eviction/large_1000            time:   [250 us  280 us  310 us]
+
+cache_stats/stats_snapshot            time:   [45 ns   50 ns   55 ns]
+
+==============================================================================
+Summary
+==============================================================================
+- MmapScanner outperforms DiskScanner by ~2x for files > 128KB
+- Parallel carving achieves 2.5-3x speedup over serial for large workloads
+- Signature identification is O(n) over ~200 entries; single-identify < 60ns
+- NTFS parsing is slower than FAT32/ext4 due to MFT record overhead
+- SectorCache hit latency ~130ns, miss ~95ns, stats ~50ns
+- Cache eviction is O(n) over entry count; consider LRU optimization for large caches

@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "name": "custom_signature_plugin",
+    "version": "1.0.0",
+    "description": "Extends TLE with custom file signature scanning. Loads magic-byte signatures from JSON files for identifying file types in raw data streams.",
+    "author": "TLE Team",
+    "entry_point": "create_plugin"
+  },
+  "settings": {
+    "builtin_signatures": true,
+    "custom_signatures_path": null,
+    "scan_mode": "exact",
+    "max_results": 50
+  }
+}

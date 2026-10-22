@@ -1,0 +1,1 @@
+/Users/ted/TLE/plugins/examples/custom_signature_plugin/target/release/libcustom_signature_plugin.dylib: /Users/ted/TLE/plugins/examples/custom_signature_plugin/src/lib.rs /Users/ted/TLE/plugins/src/lib.rs

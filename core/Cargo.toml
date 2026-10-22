@@ -1,0 +1,31 @@
+[package]
+name = "datadoctor-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Core data recovery engine"
+
+[dependencies]
+tokio.workspace = true
+async-trait.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+hex.workspace = true
+sha2.workspace = true
+crc32fast.workspace = true
+rayon.workspace = true
+crossbeam.workspace = true
+parking_lot.workspace = true
+byteorder.workspace = true
+memmap2.workspace = true
+num_cpus.workspace = true
+dashmap.workspace = true
+rusqlite.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

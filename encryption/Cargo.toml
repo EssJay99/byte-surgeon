@@ -1,0 +1,22 @@
+[package]
+name = "datadoctor-encryption"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Encrypted volume support"
+
+[dependencies]
+datadoctor-core = { path = "../core" }
+tokio.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+aes-gcm.workspace = true
+sha2.workspace = true
+byteorder.workspace = true
+hex.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

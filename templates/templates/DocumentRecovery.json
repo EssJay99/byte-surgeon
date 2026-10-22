@@ -1,0 +1,48 @@
+{
+  "name": "DocumentRecovery",
+  "description": "Recover lost or damaged documents from file systems",
+  "schema_version": "1.0",
+  "steps": [
+    {
+      "name": "Create Disk Image",
+      "description": "Create a forensic copy of {{device}} to preserve evidence",
+      "command": "dd if={{device}} of={{image_path}} bs=4M status=progress",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Mount Image",
+      "description": "Mount the disk image for analysis",
+      "command": "mount -o ro,loop {{image_path}} {{mount_point}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Scan Documents",
+      "description": "Search for document files (pdf, docx, odt, txt)",
+      "command": "find {{mount_point}} -type f \\( -iname '*.pdf' -o -iname '*.docx' -o -iname '*.odt' -o -iname '*.txt' -o -iname '*.doc' \\) -size +0c",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Extract Files",
+      "description": "Copy recovered documents to {{output_dir}}",
+      "command": "cp -v {{mount_point}}/**/*.{{doc_extensions}} {{output_dir}}/",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Verify Documents",
+      "description": "Verify recovered documents are readable",
+      "command": "file {{output_dir}}/* | grep -i 'document\\|pdf\\|text'",
+      "parameters": {},
+      "required": false
+    }
+  ],
+  "configuration": {
+    "risk_level": "low",
+    "estimated_duration": "15-60 minutes",
+    "prerequisites": ["sufficient disk space for image"],
+    "output_format": "document files"
+  }
+}

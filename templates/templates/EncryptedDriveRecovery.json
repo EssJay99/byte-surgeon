@@ -1,0 +1,48 @@
+{
+  "name": "EncryptedDriveRecovery",
+  "description": "Recover data from encrypted drives using provided credentials",
+  "schema_version": "1.0",
+  "steps": [
+    {
+      "name": "Identify Encryption",
+      "description": "Identify encryption type on {{device}}",
+      "command": "cryptsetup status {{device}} 2>/dev/null || blkid {{device}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Unlock Drive",
+      "description": "Unlock encrypted drive using {{unlock_method}}",
+      "command": "cryptsetup luksOpen {{device}} {{mapped_name}} --key-file {{key_file}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Mount Filesystem",
+      "description": "Mount the unlocked filesystem to {{mount_point}}",
+      "command": "mount -o ro /dev/mapper/{{mapped_name}} {{mount_point}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Copy Data",
+      "description": "Copy recoverable data to {{output_dir}}",
+      "command": "rsync -av --progress {{mount_point}}/ {{output_dir}}/",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Unmount and Lock",
+      "description": "Safely unmount and lock the drive",
+      "command": "umount {{mount_point}} && cryptsetup luksClose {{mapped_name}}",
+      "parameters": {},
+      "required": true
+    }
+  ],
+  "configuration": {
+    "risk_level": "high",
+    "estimated_duration": "30-180 minutes",
+    "prerequisites": ["cryptsetup installed", "valid credentials or key file"],
+    "output_format": "decrypted files"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "metadata": {
+    "name": "cloud_storage_plugin",
+    "version": "1.0.0",
+    "description": "Simulates cloud storage recovery for AWS S3, Azure Blob Storage, and Google Cloud Storage. Demonstrates external service integration patterns for forensic evidence retrieval.",
+    "author": "TLE Team",
+    "entry_point": "create_plugin"
+  },
+  "settings": {
+    "simulate_only": true,
+    "max_concurrent_requests": 4,
+    "timeout_seconds": 30,
+    "providers": ["aws", "azure", "gcp"]
+  }
+}

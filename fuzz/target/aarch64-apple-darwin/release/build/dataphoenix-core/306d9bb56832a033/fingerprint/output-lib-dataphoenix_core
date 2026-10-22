@@ -1,0 +1,1 @@
+{"$message_type":"unused_extern","lint_level":"force-warn","unused_extern_names":["anyhow","async_trait","crc32fast","crossbeam","dashmap","num_cpus"]}

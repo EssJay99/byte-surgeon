@@ -1,0 +1,41 @@
+{
+  "name": "PhotoRecovery",
+  "description": "Recover deleted or corrupted photos from storage media",
+  "schema_version": "1.0",
+  "steps": [
+    {
+      "name": "Scan Media",
+      "description": "Scan {{device}} for recoverable photo files",
+      "command": "photorec /select {{device}}",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Filter Results",
+      "description": "Filter recovered files for image formats (jpg, png, raw)",
+      "command": "find {{output_dir}} -type f \\( -iname '*.jpg' -o -iname '*.png' -o -iname '*.raw' -o -iname '*.tiff' \\)",
+      "parameters": {},
+      "required": true
+    },
+    {
+      "name": "Verify Integrity",
+      "description": "Verify integrity of recovered photos",
+      "command": "identify -verbose {{output_dir}}/* 2>/dev/null | grep -c 'Filename'",
+      "parameters": {},
+      "required": false
+    },
+    {
+      "name": "Organize",
+      "description": "Organize recovered photos by date into {{organized_dir}}",
+      "command": "exiftool '-Directory<DateTimeOriginal' -d {{organized_dir}}/%Y/%m {{output_dir}}",
+      "parameters": {},
+      "required": false
+    }
+  ],
+  "configuration": {
+    "risk_level": "low",
+    "estimated_duration": "30-120 minutes",
+    "prerequisites": ["photorec installed", "exiftool installed"],
+    "output_format": "image files"
+  }
+}

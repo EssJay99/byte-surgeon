@@ -1,0 +1,19 @@
+[package]
+name = "datadoctor-forensic"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Advanced forensic analysis tools"
+
+[dependencies]
+datadoctor-core = { path = "../core" }
+tokio.workspace = true
+thiserror.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+chrono.workspace = true
+byteorder.workspace = true
+bitflags.workspace = true
+rusqlite.workspace = true
