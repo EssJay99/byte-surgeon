@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "Data Doctor",
+    "productName": "Byte Surgeon",
     "version": "1.0.0"
   },
   "tauri": {
@@ -21,7 +21,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.datadoctor.app",
+      "identifier": "com.bytesurgeon.app",
       "icon": []
     },
     "security": {
@@ -31,7 +31,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Data Doctor - Advanced Data Recovery",
+        "title": "Byte Surgeon - Advanced Data Recovery",
         "width": 1200,
         "height": 800
       }

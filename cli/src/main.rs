@@ -1,31 +1,31 @@
 use clap::{Parser, Subcommand};
 #[allow(unused_imports)]
-use datadoctor_core::{
+use bytesurgeon_core::{
     RecoveryEngine, ScanType, PartitionScanner, HexViewer, FilePreviewer,
     SignatureDatabase, RecoveryFilter, RecoveryFilterBuilder,
     WriteProtector, DeduplicationEngine, ReportGenerator, ReportData,
 };
 #[allow(unused_imports)]
-use datadoctor_diskimage::{self, DiskImage};
+use bytesurgeon_diskimage::{self, DiskImage};
 #[allow(unused_imports)]
-use datadoctor_encryption::{self, EncryptedVolume, VolumeType};
+use bytesurgeon_encryption::{self, EncryptedVolume, VolumeType};
 #[allow(unused_imports)]
-use datadoctor_raid::{self, RaidReconstructor, RaidLevel};
-use datadoctor_devices::DeviceDetector;
-use datadoctor_security::compliance::ComplianceChecker;
-use datadoctor_security::SecurityScanner;
-use datadoctor_crypto::DecryptionEngine;
+use bytesurgeon_raid::{self, RaidReconstructor, RaidLevel};
+use bytesurgeon_devices::DeviceDetector;
+use bytesurgeon_security::compliance::ComplianceChecker;
+use bytesurgeon_security::SecurityScanner;
+use bytesurgeon_crypto::DecryptionEngine;
 #[allow(unused_imports)]
-use datadoctor_forensic::{
+use bytesurgeon_forensic::{
     UsnJournalParser, ShadowCopyDetector, FragmentScanner, FileReparer, RegistryParser,
 };
 #[allow(unused_imports)]
-use datadoctor_chat::{
+use bytesurgeon_chat::{
     WhatsAppRecoverer, IMessageRecoverer, SignalRecoverer, SlackParser,
     BrowserHistoryRecoverer, SqliteCarver, EmailRecoverer,
 };
 #[allow(unused_imports)]
-use datadoctor_enterprise::{
+use bytesurgeon_enterprise::{
     ScanManager, BatchProcessor, CaseManager, ApiServer,
 };
 mod wizards;
@@ -38,7 +38,7 @@ use dialoguer::Input;
 use walkdir::WalkDir;
 
 #[derive(Parser)]
-#[command(name = "Data Doctor")]
+#[command(name = "Byte Surgeon")]
 #[command(about = "Advanced cross-platform data recovery software")]
 #[command(version = "1.0.0")]
 struct Cli {
@@ -48,7 +48,7 @@ struct Cli {
     #[arg(short, long, default_value = "info")]
     log_level: String,
 
-    #[arg(short, long, default_value = "./datadoctor_data")]
+    #[arg(short, long, default_value = "./bytesurgeon_data")]
     data_dir: PathBuf,
 }
 
@@ -451,17 +451,17 @@ async fn main() -> anyhow::Result<()> {
         Commands::ThreatScan { path } => {
             println!("{}", format!("Scanning {} for threats...", path.display()).cyan());
 
-            let scanner = datadoctor_security::malware::MalwareScanner::new();
+            let scanner = bytesurgeon_security::malware::MalwareScanner::new();
             let status = scanner.scan_file(&path)?;
 
             match status {
-                datadoctor_core::ThreatStatus::Clean => {
+                bytesurgeon_core::ThreatStatus::Clean => {
                     println!("{}", "✓ File is clean".green());
                 }
-                datadoctor_core::ThreatStatus::Suspicious => {
+                bytesurgeon_core::ThreatStatus::Suspicious => {
                     println!("{}", "⚠ File contains suspicious patterns".yellow());
                 }
-                datadoctor_core::ThreatStatus::ThreatDetected => {
+                bytesurgeon_core::ThreatStatus::ThreatDetected => {
                     println!("{}", "✗ Threat detected!".red());
                 }
                 _ => {
@@ -523,7 +523,7 @@ async fn main() -> anyhow::Result<()> {
         Commands::NetworkScan { subnet } => {
             println!("{}", format!("Scanning network {}...", subnet).cyan());
 
-            let scanner = datadoctor_network::NetworkScanner::new();
+            let scanner = bytesurgeon_network::NetworkScanner::new();
             let hosts = scanner.scan_subnet(&subnet)?;
 
             if hosts.is_empty() {
@@ -539,7 +539,7 @@ async fn main() -> anyhow::Result<()> {
         Commands::Decrypt { input, output } => {
             println!("{}", "Decrypting file...".cyan());
 
-            let decryptor = datadoctor_crypto::decryptor::FileDecryptor::new();
+            let decryptor = bytesurgeon_crypto::decryptor::FileDecryptor::new();
 
             if decryptor.is_encrypted(&input)? {
                 let enc_type = decryptor.get_encryption_type(&input)?;
@@ -743,7 +743,7 @@ async fn main() -> anyhow::Result<()> {
 
             let result: anyhow::Result<()> = match detected_format {
                 "VMDK (sparse)" | "VMDK (VMware)" => {
-                    match datadoctor_diskimage::vmdk::VmdkImage::open(&path) {
+                    match bytesurgeon_diskimage::vmdk::VmdkImage::open(&path) {
                         Ok(img) => {
                             let meta = img.metadata();
                             print_image_metadata(&meta);
@@ -753,7 +753,7 @@ async fn main() -> anyhow::Result<()> {
                     Ok(())
                 }
                 "VHD" | "VHDX" | "VHD/VHDX (Hyper-V)" => {
-                    match datadoctor_diskimage::vhd::VhdImage::open(&path) {
+                    match bytesurgeon_diskimage::vhd::VhdImage::open(&path) {
                         Ok(img) => {
                             let meta = img.metadata();
                             print_image_metadata(&meta);
@@ -763,7 +763,7 @@ async fn main() -> anyhow::Result<()> {
                     Ok(())
                 }
                 "E01 (EnCase)" => {
-                    match datadoctor_diskimage::e01::E01Image::open(&path) {
+                    match bytesurgeon_diskimage::e01::E01Image::open(&path) {
                         Ok(img) => {
                             let meta = img.metadata();
                             print_image_metadata(&meta);
@@ -773,7 +773,7 @@ async fn main() -> anyhow::Result<()> {
                     Ok(())
                 }
                 _ => {
-                    match datadoctor_diskimage::raw::RawImage::open(&path) {
+                    match bytesurgeon_diskimage::raw::RawImage::open(&path) {
                         Ok(img) => {
                             let meta = img.metadata();
                             print_image_metadata(&meta);
@@ -801,7 +801,7 @@ async fn main() -> anyhow::Result<()> {
             pb.set_message("Imaging device...");
             pb.enable_steady_tick(std::time::Duration::from_millis(100));
 
-            match datadoctor_diskimage::raw::RawImage::create_from_device(
+            match bytesurgeon_diskimage::raw::RawImage::create_from_device(
                 std::path::Path::new(&device),
                 &output,
             ) {
@@ -836,7 +836,7 @@ async fn main() -> anyhow::Result<()> {
                     }
                 };
                 let size = data.len() as u64;
-                raid_disks.push(datadoctor_raid::RaidDisk {
+                raid_disks.push(bytesurgeon_raid::RaidDisk {
                     path: disk_path.clone(),
                     size,
                     position: i,
@@ -844,7 +844,7 @@ async fn main() -> anyhow::Result<()> {
                 });
             }
 
-            let detector = datadoctor_raid::RaidDetector::new();
+            let detector = bytesurgeon_raid::RaidDetector::new();
             match detector.detect(&raid_disks) {
                 Ok(info) => {
                     println!("\n{}", "RAID Information:".cyan());
@@ -869,25 +869,25 @@ async fn main() -> anyhow::Result<()> {
 
             let mut detected = Vec::new();
 
-            match datadoctor_encryption::bitlocker::BitLockerVolume::detect(&device) {
+            match bytesurgeon_encryption::bitlocker::BitLockerVolume::detect(&device) {
                 Ok(true) => detected.push(("BitLocker", VolumeType::BitLocker)),
                 Ok(false) => {}
                 Err(e) => println!("  BitLocker check error: {}", e),
             }
 
-            match datadoctor_encryption::filevault::FileVaultVolume::detect(&device) {
+            match bytesurgeon_encryption::filevault::FileVaultVolume::detect(&device) {
                 Ok(true) => detected.push(("FileVault", VolumeType::FileVault)),
                 Ok(false) => {}
                 Err(e) => println!("  FileVault check error: {}", e),
             }
 
-            match datadoctor_encryption::luks::LuksVolume::detect(&device) {
+            match bytesurgeon_encryption::luks::LuksVolume::detect(&device) {
                 Ok(true) => detected.push(("LUKS", VolumeType::LUKS)),
                 Ok(false) => {}
                 Err(e) => println!("  LUKS check error: {}", e),
             }
 
-            match datadoctor_encryption::veracrypt::VeraCryptVolume::detect(&device) {
+            match bytesurgeon_encryption::veracrypt::VeraCryptVolume::detect(&device) {
                 Ok(true) => detected.push(("VeraCrypt", VolumeType::VeraCrypt)),
                 Ok(false) => {}
                 Err(e) => println!("  VeraCrypt check error: {}", e),
@@ -1598,7 +1598,7 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 
-fn print_image_metadata(meta: &datadoctor_diskimage::ImageMetadata) {
+fn print_image_metadata(meta: &bytesurgeon_diskimage::ImageMetadata) {
     println!("  Format     : {}", meta.format);
     println!("  Size       : {} bytes", meta.size_bytes);
     println!("  Sectors    : {}", meta.total_sectors);

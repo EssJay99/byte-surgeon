@@ -1,6 +1,6 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
-use datadoctor_core::{FileCarver, FileSignature};
-use datadoctor_core::scanner::SignatureMatch;
+use bytesurgeon_core::{FileCarver, FileSignature};
+use bytesurgeon_core::scanner::SignatureMatch;
 use rand::Rng;
 use tempfile::TempDir;
 

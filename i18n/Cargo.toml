@@ -1,9 +1,9 @@
 [package]
-name = "datadoctor-i18n"
+name = "bytesurgeon-i18n"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
-description = "Internationalization support for Data Doctor"
+description = "Internationalization support for Byte Surgeon"
 
 [dependencies]
 serde.workspace = true

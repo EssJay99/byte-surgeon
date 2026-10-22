@@ -1,4 +1,4 @@
-# Data Doctor - Advanced Data Recovery Software
+# Byte Surgeon - Advanced Data Recovery Software
 
 A comprehensive, cross-platform data recovery solution built with Rust for maximum performance, security, and reliability.
 
@@ -31,7 +31,7 @@ A comprehensive, cross-platform data recovery solution built with Rust for maxim
 
 ### Workspace Structure
 ```
-datadoctor/
+bytesurgeon/
 ├── core/           # Core recovery engine
 ├── filesystem/     # File system parsers (NTFS, FAT32, ext4, APFS)
 ├── devices/        # Device detection and abstraction
@@ -66,8 +66,8 @@ datadoctor/
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourorg/datadoctor.git
-cd datadoctor
+git clone https://github.com/yourorg/bytesurgeon.git
+cd bytesurgeon
 ```
 
 2. Build the workspace:
@@ -93,12 +93,12 @@ npm run tauri build
 
 #### Scan for Devices
 ```bash
-datadoctor scan
+bytesurgeon scan
 ```
 
 #### Start Recovery
 ```bash
-datadoctor recover --device /dev/sda --mode signature --output ./recovered
+bytesurgeon recover --device /dev/sda --mode signature --output ./recovered
 ```
 
 Recovery modes:
@@ -110,32 +110,32 @@ Recovery modes:
 
 #### View Sessions
 ```bash
-datadoctor sessions
+bytesurgeon sessions
 ```
 
 #### List Recovered Files
 ```bash
-datadoctor files --session <session-id>
+bytesurgeon files --session <session-id>
 ```
 
 #### Threat Scanning
 ```bash
-datadoctor threat-scan --path /path/to/file
+bytesurgeon threat-scan --path /path/to/file
 ```
 
 #### Check Compliance
 ```bash
-datadoctor compliance
+bytesurgeon compliance
 ```
 
 #### Network Scanning
 ```bash
-datadoctor network-scan --subnet 192.168.1
+bytesurgeon network-scan --subnet 192.168.1
 ```
 
 #### Decrypt Files
 ```bash
-datadoctor decrypt --input encrypted.zip --output decrypted.zip
+bytesurgeon decrypt --input encrypted.zip --output decrypted.zip
 ```
 
 ### GUI Application
@@ -256,9 +256,9 @@ Proprietary - All rights reserved
 ## Support
 
 For support and questions:
-- GitHub Issues: https://github.com/yourorg/datadoctor/issues
-- Email: support@datadoctor.com
-- Documentation: https://docs.datadoctor.com
+- GitHub Issues: https://github.com/yourorg/bytesurgeon/issues
+- Email: support@bytesurgeon.com
+- Documentation: https://docs.bytesurgeon.com
 
 ## Roadmap
 
@@ -297,4 +297,4 @@ Built with:
 
 ---
 
-**Data Doctor** - Recover what matters most, securely and efficiently.
+**Byte Surgeon** - Recover what matters most, securely and efficiently.

@@ -3,29 +3,29 @@
     windows_subsystem = "windows"
 )]
 
-use datadoctor_core::{
+use bytesurgeon_core::{
     DeduplicationEngine, FilePreviewer, HexViewer, PartitionScanner, PreviewData,
     RecoveryEngine, ReportGenerator, ScanType, SignatureCategory, SignatureDatabase,
     WriteProtector,
 };
-use datadoctor_devices::DeviceDetector;
-use datadoctor_diskimage::{DiskImage, ImageMetadata};
-use datadoctor_encryption::bitlocker::BitLockerVolume;
-use datadoctor_encryption::filevault::FileVaultVolume;
-use datadoctor_encryption::luks::LuksVolume;
-use datadoctor_encryption::veracrypt::VeraCryptVolume;
-use datadoctor_encryption::EncryptedVolume;
-use datadoctor_raid::{RaidDisk, RaidDetector};
-use datadoctor_security::malware::MalwareScanner;
-use datadoctor_security::SecurityScanner;
-use datadoctor_forensic::{
+use bytesurgeon_devices::DeviceDetector;
+use bytesurgeon_diskimage::{DiskImage, ImageMetadata};
+use bytesurgeon_encryption::bitlocker::BitLockerVolume;
+use bytesurgeon_encryption::filevault::FileVaultVolume;
+use bytesurgeon_encryption::luks::LuksVolume;
+use bytesurgeon_encryption::veracrypt::VeraCryptVolume;
+use bytesurgeon_encryption::EncryptedVolume;
+use bytesurgeon_raid::{RaidDisk, RaidDetector};
+use bytesurgeon_security::malware::MalwareScanner;
+use bytesurgeon_security::SecurityScanner;
+use bytesurgeon_forensic::{
     FileReparer, FragmentScanner, RegistryParser, ShadowCopyDetector, UsnJournalParser,
 };
-use datadoctor_chat::{
+use bytesurgeon_chat::{
     BrowserHistoryRecoverer, EmailRecoverer, IMessageRecoverer, SignalRecoverer,
     SlackParser, SqliteCarver, WhatsAppRecoverer,
 };
-use datadoctor_enterprise::{
+use bytesurgeon_enterprise::{
     ApiServer, BatchProcessor, CaseManager, ScanManager,
 };
 use serde::{Deserialize, Serialize};
@@ -304,7 +304,7 @@ async fn scan_threats(request: ThreatScanRequest) -> Result<String, String> {
 
 #[tauri::command]
 async fn check_compliance() -> Result<String, String> {
-    let checker = datadoctor_security::compliance::ComplianceChecker::new();
+    let checker = bytesurgeon_security::compliance::ComplianceChecker::new();
     let report = checker.check_nist_compliance().map_err(|e| e.to_string())?;
 
     Ok(format!(
@@ -364,12 +364,12 @@ async fn preview_file(path: String) -> Result<String, String> {
 async fn get_image_info(path: String) -> Result<String, String> {
     let path = Path::new(&path);
 
-    if let Ok(e01) = datadoctor_diskimage::e01::E01Image::open(path) {
+    if let Ok(e01) = bytesurgeon_diskimage::e01::E01Image::open(path) {
         let metadata: ImageMetadata = e01.metadata();
         return serde_json::to_string(&metadata).map_err(|e| e.to_string());
     }
 
-    let raw = datadoctor_diskimage::raw::RawImage::open(path).map_err(|e| e.to_string())?;
+    let raw = bytesurgeon_diskimage::raw::RawImage::open(path).map_err(|e| e.to_string())?;
     let metadata: ImageMetadata = raw.metadata();
     serde_json::to_string(&metadata).map_err(|e| e.to_string())
 }
@@ -852,7 +852,7 @@ async fn start_api_server(port: u16) -> Result<String, String> {
 fn main() {
     let data_dir = dirs::data_dir()
         .unwrap_or_else(|| std::env::temp_dir())
-        .join("datadoctor");
+        .join("bytesurgeon");
     let engine = RecoveryEngine::new(&data_dir).expect("Failed to initialize engine");
 
     tauri::Builder::default()

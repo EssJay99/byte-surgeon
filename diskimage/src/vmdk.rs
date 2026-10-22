@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use byteorder::{LittleEndian, ReadBytesExt};
 use tracing::{info, debug, warn};
 
-use datadoctor_core::{Result, Error};
+use bytesurgeon_core::{Result, Error};
 use crate::{DiskImage, ImageMetadata};
 
 #[allow(dead_code)]

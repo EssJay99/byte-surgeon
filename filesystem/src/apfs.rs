@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 use crate::common::{FileSystem, SuperblockInfo, DirectoryEntry, FileEntry};
-use datadoctor_core::{Result, Error, FileMetadata};
+use bytesurgeon_core::{Result, Error, FileMetadata};
 use std::fs::File;
 use std::io::{Read, Seek, SeekFrom};
 use tracing::{debug, warn};

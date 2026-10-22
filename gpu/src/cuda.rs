@@ -1,4 +1,4 @@
-//! CUDA acceleration for Data Doctor
+//! CUDA acceleration for Byte Surgeon
 //!
 //! Provides NVIDIA GPU acceleration using CUDA for signature scanning.
 

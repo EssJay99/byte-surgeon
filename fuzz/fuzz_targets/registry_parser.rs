@@ -8,11 +8,11 @@ fuzz_target!(|data: &[u8]| {
     }
 
     let _ = std::panic::catch_unwind(|| {
-        let _ = datadoctor_forensic::registry::RegistryParser::parse_hive_data(data);
+        let _ = bytesurgeon_forensic::registry::RegistryParser::parse_hive_data(data);
     });
 
     let _ = std::panic::catch_unwind(|| {
-        let _ = datadoctor_forensic::registry::RegistryParser::load_from_data(data);
+        let _ = bytesurgeon_forensic::registry::RegistryParser::load_from_data(data);
     });
 
     let _ = std::panic::catch_unwind(|| {
@@ -23,7 +23,7 @@ fuzz_target!(|data: &[u8]| {
             mutated[2] = b'g';
             mutated[3] = b'f';
         }
-        let _ = datadoctor_forensic::registry::RegistryParser::parse_hive_data(&mutated);
+        let _ = bytesurgeon_forensic::registry::RegistryParser::parse_hive_data(&mutated);
     });
 
     if data.len() >= 64 {
@@ -34,7 +34,7 @@ fuzz_target!(|data: &[u8]| {
             mutated[2] = b'g';
             mutated[3] = b'f';
 
-            if let Ok(parser) = datadoctor_forensic::registry::RegistryParser::load_from_data(&mutated) {
+            if let Ok(parser) = bytesurgeon_forensic::registry::RegistryParser::load_from_data(&mutated) {
                 let _ = parser.root_key();
                 let _ = parser.extract_user_activity();
                 let _ = parser.extract_installed_software();

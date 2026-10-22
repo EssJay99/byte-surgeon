@@ -1,4 +1,4 @@
-use datadoctor_sdk::{
+use bytesurgeon_sdk::{
     RecoveryBuilder, DeviceScanner,
     RecoveryReport,
 };

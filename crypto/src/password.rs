@@ -1,8 +1,8 @@
 use aes_gcm::aead::generic_array::GenericArray;
 use aes_gcm::aead::{Aead, KeyInit};
 use aes_gcm::Aes256Gcm;
-use datadoctor_core::Error;
-use datadoctor_core::Result;
+use bytesurgeon_core::Error;
+use bytesurgeon_core::Result;
 use std::fs;
 use std::path::Path;
 use tracing::{debug, info};

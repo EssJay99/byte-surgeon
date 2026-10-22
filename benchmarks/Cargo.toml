@@ -1,5 +1,5 @@
 [package]
-name = "datadoctor-benchmarks"
+name = "bytesurgeon-benchmarks"
 version = "1.0.0"
 edition = "2021"
 publish = false
@@ -29,8 +29,8 @@ name = "cache_performance"
 harness = false
 
 [dependencies]
-datadoctor-core = { path = "../core" }
-datadoctor-filesystem = { path = "../filesystem" }
+bytesurgeon-core = { path = "../core" }
+bytesurgeon-filesystem = { path = "../filesystem" }
 rand = "0.8"
 tempfile = "3.10"
 

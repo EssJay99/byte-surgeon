@@ -2,7 +2,7 @@
 
 ## Overview
 
-Data Doctor is built with security as a top priority, following NASA and industry-standard security practices. This document outlines our security approach and compliance measures.
+Byte Surgeon is built with security as a top priority, following NASA and industry-standard security practices. This document outlines our security approach and compliance measures.
 
 ## Security Architecture
 
@@ -27,7 +27,7 @@ Data Doctor is built with security as a top priority, following NASA and industr
 ## Compliance Standards
 
 ### NIST SP 800-53 Rev 5
-Data Doctor aligns with NIST Special Publication 800-53, covering:
+Byte Surgeon aligns with NIST Special Publication 800-53, covering:
 
 - **AC - Access Control**: Device access controls and permissions
 - **AU - Audit and Accountability**: Complete operation logging
@@ -88,7 +88,7 @@ Example audit log entry:
 ### Reporting
 If you discover a security vulnerability:
 1. DO NOT create a public issue
-2. Email security@datadoctor.com
+2. Email security@bytesurgeon.com
 3. Include detailed reproduction steps
 4. Allow 90 days for resolution before disclosure
 
@@ -179,9 +179,9 @@ Before deployment, verify:
 
 ## Security Contacts
 
-- **Security Team**: security@datadoctor.com
-- **CISO**: ciso@datadoctor.com
-- **Emergency**: emergency@datadoctor.com
+- **Security Team**: security@bytesurgeon.com
+- **CISO**: ciso@bytesurgeon.com
+- **Emergency**: emergency@bytesurgeon.com
 
 ## Resources
 

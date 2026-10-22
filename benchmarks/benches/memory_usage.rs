@@ -1,6 +1,6 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
-use datadoctor_core::SignatureDatabase;
-use datadoctor_core::scanner::MmapScanner;
+use bytesurgeon_core::SignatureDatabase;
+use bytesurgeon_core::scanner::MmapScanner;
 use rand::Rng;
 use std::io::Write;
 use tempfile::{NamedTempFile, TempDir};
@@ -87,9 +87,9 @@ fn bench_carving_memory(c: &mut Criterion) {
             file_data.extend_from_slice(&[0xFF, 0xD9]);
             data.extend_from_slice(&file_data);
 
-            matches.push(datadoctor_core::scanner::SignatureMatch {
+            matches.push(bytesurgeon_core::scanner::SignatureMatch {
                 offset,
-                signature: datadoctor_core::FileSignature {
+                signature: bytesurgeon_core::FileSignature {
                     extension: "jpg".to_string(),
                     magic_bytes: vec![0xFF, 0xD8, 0xFF],
                     offset: 0,
@@ -111,7 +111,7 @@ fn bench_carving_memory(c: &mut Criterion) {
             file_count,
             |b, _| {
                 let output_dir = TempDir::new().unwrap();
-                let carver = datadoctor_core::FileCarver::new(output_dir.path(), "mem-bench");
+                let carver = bytesurgeon_core::FileCarver::new(output_dir.path(), "mem-bench");
                 b.iter(|| {
                     carver.carve_files_parallel(
                         input_path.to_str().unwrap(),

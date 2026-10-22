@@ -1,4 +1,4 @@
-use datadoctor_core::Result;
+use bytesurgeon_core::Result;
 use tracing::debug;
 
 pub struct NFSClient;

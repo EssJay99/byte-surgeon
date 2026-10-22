@@ -1,6 +1,6 @@
 #![no_main]
 
-use datadoctor_core::SignatureDatabase;
+use bytesurgeon_core::SignatureDatabase;
 use libfuzzer_sys::fuzz_target;
 
 fuzz_target!(|data: &[u8]| {

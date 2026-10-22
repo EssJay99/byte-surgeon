@@ -1,16 +1,16 @@
 [package]
-name = "datadoctor-sdk"
+name = "bytesurgeon-sdk"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 description = "High-level SDK for building custom data recovery tools"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
-datadoctor-devices = { path = "../devices" }
-datadoctor-filesystem = { path = "../filesystem" }
-datadoctor-forensic = { path = "../forensic" }
-datadoctor-encryption = { path = "../encryption" }
+bytesurgeon-core = { path = "../core" }
+bytesurgeon-devices = { path = "../devices" }
+bytesurgeon-filesystem = { path = "../filesystem" }
+bytesurgeon-forensic = { path = "../forensic" }
+bytesurgeon-encryption = { path = "../encryption" }
 tokio.workspace = true
 thiserror.workspace = true
 anyhow.workspace = true

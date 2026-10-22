@@ -4,7 +4,7 @@ pub mod vmdk;
 pub mod vhd;
 
 use std::path::Path;
-use datadoctor_core::Result;
+use bytesurgeon_core::Result;
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

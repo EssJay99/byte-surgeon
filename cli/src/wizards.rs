@@ -4,8 +4,8 @@ use dialoguer::{Confirm, Input, Select};
 use indicatif::{ProgressBar, ProgressStyle};
 use std::collections::HashMap;
 use std::path::PathBuf;
-use datadoctor_encryption::EncryptedVolume;
-use datadoctor_crypto::DecryptionEngine;
+use bytesurgeon_encryption::EncryptedVolume;
+use bytesurgeon_crypto::DecryptionEngine;
 
 pub struct Step {
     pub prompt: String,
@@ -236,7 +236,7 @@ impl Wizard for RecoveryWizard {
 
         if write_protect == "yes" {
             pb.set_message("Enabling write protection...");
-            let mut protector = datadoctor_core::WriteProtector::new();
+            let mut protector = bytesurgeon_core::WriteProtector::new();
             match protector.verify_device(&device) {
                 Ok(status) => {
                     if !status.is_write_protected {
@@ -255,8 +255,8 @@ impl Wizard for RecoveryWizard {
         }
 
         pb.set_message("Initializing recovery engine...");
-        let data_dir = PathBuf::from("./datadoctor_data");
-        let engine = datadoctor_core::RecoveryEngine::new(&data_dir)?;
+        let data_dir = PathBuf::from("./bytesurgeon_data");
+        let engine = bytesurgeon_core::RecoveryEngine::new(&data_dir)?;
         let devices = engine.get_all_devices()?;
 
         let target = devices
@@ -266,12 +266,12 @@ impl Wizard for RecoveryWizard {
         match target {
             Some(device_info) => {
                 let scan_type = match mode.as_str() {
-                    "quick" => datadoctor_core::ScanType::Quick,
-                    "deep" => datadoctor_core::ScanType::Deep,
-                    "signature" => datadoctor_core::ScanType::Signature,
-                    "filesystem" => datadoctor_core::ScanType::FileSystem,
-                    "raw" => datadoctor_core::ScanType::Raw,
-                    _ => datadoctor_core::ScanType::Signature,
+                    "quick" => bytesurgeon_core::ScanType::Quick,
+                    "deep" => bytesurgeon_core::ScanType::Deep,
+                    "signature" => bytesurgeon_core::ScanType::Signature,
+                    "filesystem" => bytesurgeon_core::ScanType::FileSystem,
+                    "raw" => bytesurgeon_core::ScanType::Raw,
+                    _ => bytesurgeon_core::ScanType::Signature,
                 };
 
                 pb.set_message("Running recovery scan...");
@@ -286,7 +286,7 @@ impl Wizard for RecoveryWizard {
                     let session_data = engine.get_session(&session_id)?;
                     let files = engine.get_recovered_files(&session_id)?;
                     if let Some(sess) = session_data {
-                        let generator = datadoctor_core::ReportGenerator::new();
+                        let generator = bytesurgeon_core::ReportGenerator::new();
                         let data = generator.generate_report_data(&sess, &files);
                         let report_path = output_path.join("report.txt");
                         let _ = generator.generate_text(&data, &report_path);
@@ -356,7 +356,7 @@ impl Wizard for DeviceScanWizard {
         pb.enable_steady_tick(std::time::Duration::from_millis(100));
 
         pb.set_message("Detecting devices...");
-        let detector = datadoctor_devices::DeviceDetector::new();
+        let detector = bytesurgeon_devices::DeviceDetector::new();
         let devices = detector.detect_all_devices()?;
 
         pb.finish_with_message(format!("Found {} devices", devices.len()));
@@ -400,25 +400,25 @@ impl Wizard for DeviceScanWizard {
 
                 if check_encryption == "yes" {
                     let mut enc_detected = false;
-                    if datadoctor_encryption::bitlocker::BitLockerVolume::detect(&device.path)
+                    if bytesurgeon_encryption::bitlocker::BitLockerVolume::detect(&device.path)
                         .unwrap_or(false)
                     {
                         println!("     Encryption : {} (BitLocker)", "YES".red());
                         enc_detected = true;
                     }
-                    if datadoctor_encryption::filevault::FileVaultVolume::detect(&device.path)
+                    if bytesurgeon_encryption::filevault::FileVaultVolume::detect(&device.path)
                         .unwrap_or(false)
                     {
                         println!("     Encryption : {} (FileVault)", "YES".red());
                         enc_detected = true;
                     }
-                    if datadoctor_encryption::luks::LuksVolume::detect(&device.path)
+                    if bytesurgeon_encryption::luks::LuksVolume::detect(&device.path)
                         .unwrap_or(false)
                     {
                         println!("     Encryption : {} (LUKS)", "YES".red());
                         enc_detected = true;
                     }
-                    if datadoctor_encryption::veracrypt::VeraCryptVolume::detect(&device.path)
+                    if bytesurgeon_encryption::veracrypt::VeraCryptVolume::detect(&device.path)
                         .unwrap_or(false)
                     {
                         println!("     Encryption : {} (VeraCrypt)", "YES".red());
@@ -430,7 +430,7 @@ impl Wizard for DeviceScanWizard {
                 }
 
                 if check_wp == "yes" {
-                    let mut protector = datadoctor_core::WriteProtector::new();
+                    let mut protector = bytesurgeon_core::WriteProtector::new();
                     match protector.verify_device(&device.path) {
                         Ok(status) => {
                             let wp = if status.is_write_protected {
@@ -528,33 +528,33 @@ impl Wizard for EncryptionWizard {
         pb.set_message("Analyzing encryption...");
 
         let check_all = enc_types.starts_with("all");
-        let mut detected: Vec<(String, datadoctor_encryption::VolumeType)> = Vec::new();
+        let mut detected: Vec<(String, bytesurgeon_encryption::VolumeType)> = Vec::new();
 
         if check_all || enc_types.contains("BitLocker") {
             pb.set_message("Checking BitLocker...");
-            if datadoctor_encryption::bitlocker::BitLockerVolume::detect(&device).unwrap_or(false) {
-                detected.push(("BitLocker".to_string(), datadoctor_encryption::VolumeType::BitLocker));
+            if bytesurgeon_encryption::bitlocker::BitLockerVolume::detect(&device).unwrap_or(false) {
+                detected.push(("BitLocker".to_string(), bytesurgeon_encryption::VolumeType::BitLocker));
             }
         }
 
         if check_all || enc_types.contains("FileVault") {
             pb.set_message("Checking FileVault...");
-            if datadoctor_encryption::filevault::FileVaultVolume::detect(&device).unwrap_or(false) {
-                detected.push(("FileVault".to_string(), datadoctor_encryption::VolumeType::FileVault));
+            if bytesurgeon_encryption::filevault::FileVaultVolume::detect(&device).unwrap_or(false) {
+                detected.push(("FileVault".to_string(), bytesurgeon_encryption::VolumeType::FileVault));
             }
         }
 
         if check_all || enc_types.contains("LUKS") {
             pb.set_message("Checking LUKS...");
-            if datadoctor_encryption::luks::LuksVolume::detect(&device).unwrap_or(false) {
-                detected.push(("LUKS".to_string(), datadoctor_encryption::VolumeType::LUKS));
+            if bytesurgeon_encryption::luks::LuksVolume::detect(&device).unwrap_or(false) {
+                detected.push(("LUKS".to_string(), bytesurgeon_encryption::VolumeType::LUKS));
             }
         }
 
         if check_all || enc_types.contains("VeraCrypt") {
             pb.set_message("Checking VeraCrypt...");
-            if datadoctor_encryption::veracrypt::VeraCryptVolume::detect(&device).unwrap_or(false) {
-                detected.push(("VeraCrypt".to_string(), datadoctor_encryption::VolumeType::VeraCrypt));
+            if bytesurgeon_encryption::veracrypt::VeraCryptVolume::detect(&device).unwrap_or(false) {
+                detected.push(("VeraCrypt".to_string(), bytesurgeon_encryption::VolumeType::VeraCrypt));
             }
         }
 
@@ -578,7 +578,7 @@ impl Wizard for EncryptionWizard {
                 let output_path = PathBuf::from(&output);
                 std::fs::create_dir_all(&output_path)?;
 
-                let decryptor = datadoctor_crypto::decryptor::FileDecryptor::new();
+                let decryptor = bytesurgeon_crypto::decryptor::FileDecryptor::new();
                 let input_path = PathBuf::from(&device);
                 let decrypted_file = output_path.join("decrypted_data");
 

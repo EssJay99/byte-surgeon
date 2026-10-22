@@ -1,4 +1,4 @@
-//! Machine Learning for Data Doctor
+//! Machine Learning for Byte Surgeon
 //!
 //! This module provides ML-based file classification and analysis.
 

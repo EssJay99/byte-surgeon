@@ -1,6 +1,6 @@
-# Contributing to Data Doctor
+# Contributing to Byte Surgeon
 
-Thank you for your interest in contributing to Data Doctor. This guide covers everything you need to know to make a successful contribution.
+Thank you for your interest in contributing to Byte Surgeon. This guide covers everything you need to know to make a successful contribution.
 
 ---
 
@@ -61,8 +61,8 @@ Install Visual Studio Build Tools with C++ workload
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourorg/datadoctor.git
-cd datadoctor
+git clone https://github.com/yourorg/bytesurgeon.git
+cd bytesurgeon
 
 # Build the workspace
 cargo build
@@ -71,7 +71,7 @@ cargo build
 cargo build --release
 
 # Build CLI only
-cargo build -p datadoctor-cli
+cargo build -p bytesurgeon-cli
 
 # Build GUI
 cd gui
@@ -86,7 +86,7 @@ npm run tauri dev
 cargo test
 
 # Run tests for a specific crate
-cargo test -p datadoctor-core
+cargo test -p bytesurgeon-core
 cargo test -p tle-plugins
 
 # Run tests with output
@@ -349,7 +349,7 @@ Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `perf`, `style`
 ## Project Structure
 
 ```
-datadoctor/
+bytesurgeon/
 ├── core/               # Core recovery engine
 │   └── src/
 │       ├── lib.rs      # Public API exports
@@ -416,7 +416,7 @@ datadoctor/
 3. Add workspace dependencies:
    ```toml
    [dependencies]
-   datadoctor-core = { path = "../core" }
+   bytesurgeon-core = { path = "../core" }
    serde = { workspace = true }
    thiserror = { workspace = true }
    tracing = { workspace = true }
@@ -432,7 +432,7 @@ datadoctor/
 
 - **GitHub Issues**: Bug reports and feature requests
 - **GitHub Discussions**: Questions and design discussions
-- **Email**: support@datadoctor.com
+- **Email**: support@bytesurgeon.com
 
 ---
 

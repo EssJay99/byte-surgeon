@@ -1,6 +1,6 @@
-# Data Doctor SDK
+# Byte Surgeon SDK
 
-High-level Rust SDK for building custom data recovery and forensic tools on top of the Data Doctor engine.
+High-level Rust SDK for building custom data recovery and forensic tools on top of the Byte Surgeon engine.
 
 ## Quick Start
 
@@ -8,7 +8,7 @@ Add the SDK to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-datadoctor-sdk = { path = "../sdk" }
+bytesurgeon-sdk = { path = "../sdk" }
 ```
 
 ## Core Components
@@ -18,7 +18,7 @@ datadoctor-sdk = { path = "../sdk" }
 Fluent API for configuring and executing recovery operations:
 
 ```rust
-use datadoctor_sdk::{RecoveryBuilder, ScanType};
+use bytesurgeon_sdk::{RecoveryBuilder, ScanType};
 
 let report = RecoveryBuilder::new()
     .device("/dev/sda")
@@ -42,7 +42,7 @@ Scan types: `.quick_scan()`, `.deep_scan()`, `.signature_scan()`, `.filesystem_s
 Enumerate and filter connected devices:
 
 ```rust
-use datadoctor_sdk::{DeviceScanner, DeviceType};
+use bytesurgeon_sdk::{DeviceScanner, DeviceType};
 
 let devices = DeviceScanner::new()
     .usb_only()
@@ -60,7 +60,7 @@ Filter methods: `.filter_by_type()`, `.filter_by_filesystem()`, `.min_size()`, `
 Scan for file signatures by category or extension:
 
 ```rust
-use datadoctor_sdk::{SignatureScanner, SignatureCategory};
+use bytesurgeon_sdk::{SignatureScanner, SignatureCategory};
 
 let scanner = SignatureScanner::new()
     .images_only()
@@ -79,7 +79,7 @@ Category filters: `.images_only()`, `.documents_only()`, `.videos_only()`, `.aud
 Track recovery progress with callbacks:
 
 ```rust
-use datadoctor_sdk::ProgressReporter;
+use bytesurgeon_sdk::ProgressReporter;
 
 let reporter = ProgressReporter::new(total_bytes)
     .on_update(|snap| {
@@ -96,7 +96,7 @@ let reporter = ProgressReporter::new(total_bytes)
 All SDK operations return `SdkResult<T>` with rich error context:
 
 ```rust
-use datadoctor_sdk::{SdkError, SdkResult};
+use bytesurgeon_sdk::{SdkError, SdkResult};
 
 match RecoveryBuilder::new().device("/dev/sda").build() {
     Ok(op) => { /* ... */ }
@@ -137,8 +137,8 @@ Complete forensic workflow: device enumeration, signature pre-scan, fragment ana
 
 The SDK re-exports all public types from the core crates for convenience:
 
-- `datadoctor_core` - Engine, models, scanner, carver, filters, signatures
-- `datadoctor_devices` - Device detector
-- `datadoctor_filesystem` - File system parsers (NTFS, FAT32, ext4, APFS)
-- `datadoctor_forensic` - Fragment scanner, shadow copies, USN journal, registry
-- `datadoctor_encryption` - Encrypted volume support
+- `bytesurgeon_core` - Engine, models, scanner, carver, filters, signatures
+- `bytesurgeon_devices` - Device detector
+- `bytesurgeon_filesystem` - File system parsers (NTFS, FAT32, ext4, APFS)
+- `bytesurgeon_forensic` - Fragment scanner, shadow copies, USN journal, registry
+- `bytesurgeon_encryption` - Encrypted volume support

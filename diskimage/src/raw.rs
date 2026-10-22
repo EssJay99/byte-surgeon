@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use sha2::{Sha256, Digest};
 use tracing::{info, debug};
 
-use datadoctor_core::{Result, Error};
+use bytesurgeon_core::{Result, Error};
 use crate::{DiskImage, ImageMetadata};
 
 const DEFAULT_SECTOR_SIZE: u32 = 512;

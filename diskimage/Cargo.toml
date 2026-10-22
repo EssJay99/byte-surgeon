@@ -1,12 +1,12 @@
 [package]
-name = "datadoctor-diskimage"
+name = "bytesurgeon-diskimage"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 description = "Disk image format support for forensic analysis"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
+bytesurgeon-core = { path = "../core" }
 tokio.workspace = true
 thiserror.workspace = true
 anyhow.workspace = true

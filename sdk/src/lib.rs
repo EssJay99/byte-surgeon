@@ -10,7 +10,7 @@ pub use devices::DeviceScanner;
 pub use progress::{ProgressReporter, ProgressSnapshot};
 pub use signatures::{SignatureScanner, ScanHit};
 
-pub use datadoctor_core::{
+pub use bytesurgeon_core::{
     DeviceInfo, DeviceType, FileSystemType,
     RecoveredFile, RecoveryStatus, IntegrityStatus, ThreatStatus,
     RecoverySession, SessionStatus, ScanType,
@@ -22,7 +22,7 @@ pub use datadoctor_core::{
     scanner::{SignatureMatch, MmapScanner, MmapScanResult},
 };
 
-pub use datadoctor_devices::DeviceDetector;
-pub use datadoctor_filesystem;
-pub use datadoctor_forensic;
-pub use datadoctor_encryption;
+pub use bytesurgeon_devices::DeviceDetector;
+pub use bytesurgeon_filesystem;
+pub use bytesurgeon_forensic;
+pub use bytesurgeon_encryption;

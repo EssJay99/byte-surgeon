@@ -63,7 +63,7 @@ impl ReportGenerator {
     pub fn generate_csv(&self, data: &ReportData, output_path: &Path) -> Result<String> {
         let mut csv = String::new();
 
-        csv.push_str("# Data Doctor Recovery Report\n");
+        csv.push_str("# Byte Surgeon Recovery Report\n");
         csv.push_str(&format!("# Generated: {}\n", data.generated_at.format("%Y-%m-%d %H:%M:%S UTC")));
         csv.push_str(&format!("# Session: {}\n", data.session.id));
         csv.push_str(&format!("# Device: {} ({})\n", data.session.device_info.name, data.session.device_info.path));
@@ -196,7 +196,7 @@ impl ReportGenerator {
         html.push_str("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n");
         html.push_str("<meta charset=\"UTF-8\">\n");
         html.push_str("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
-        html.push_str("<title>Data Doctor Recovery Report</title>\n");
+        html.push_str("<title>Byte Surgeon Recovery Report</title>\n");
         html.push_str("<style>\n");
         html.push_str("body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; color: #333; }\n");
         html.push_str(".container { max-width: 1200px; margin: 0 auto; }\n");
@@ -219,7 +219,7 @@ impl ReportGenerator {
         html.push_str(".meta { color: #666; font-size: 0.9em; margin-bottom: 20px; }\n");
         html.push_str("</style>\n</head>\n<body>\n<div class=\"container\">\n");
 
-        html.push_str("<h1>Data Doctor Recovery Report</h1>\n");
+        html.push_str("<h1>Byte Surgeon Recovery Report</h1>\n");
         html.push_str(&format!("<p class=\"meta\">Session: {} | Device: {} ({}) | Generated: {}</p>\n",
             data.session.id,
             data.session.device_info.name,
@@ -299,7 +299,7 @@ impl ReportGenerator {
         let mut text = String::new();
 
         text.push_str("================================================================================\n");
-        text.push_str("                     Data Doctor Recovery Report\n");
+        text.push_str("                     Byte Surgeon Recovery Report\n");
         text.push_str("================================================================================\n\n");
 
         text.push_str(&format!("Session ID   : {}\n", data.session.id));
@@ -523,7 +523,7 @@ mod tests {
         let gen = ReportGenerator::new();
         let html = gen.generate_html_string(&data);
         assert!(html.contains("<!DOCTYPE html>"));
-        assert!(html.contains("Data Doctor Recovery Report"));
+        assert!(html.contains("Byte Surgeon Recovery Report"));
         assert!(html.contains("photo0.jpg"));
         assert!(html.contains("<table>"));
     }
@@ -544,7 +544,7 @@ mod tests {
         let data = make_test_data();
         let gen = ReportGenerator::new();
         let text = gen.generate_text_string(&data);
-        assert!(text.contains("Data Doctor Recovery Report"));
+        assert!(text.contains("Byte Surgeon Recovery Report"));
         assert!(text.contains("Files Found"));
         assert!(text.contains("photo0.jpg"));
         assert!(text.contains("Files by Type"));
@@ -558,7 +558,7 @@ mod tests {
         let output = dir.path().join("report.txt");
         let text = gen.generate_text(&data, &output).unwrap();
         assert!(output.exists());
-        assert!(text.contains("Data Doctor Recovery Report"));
+        assert!(text.contains("Byte Surgeon Recovery Report"));
     }
 
     #[test]

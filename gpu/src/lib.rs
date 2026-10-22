@@ -1,4 +1,4 @@
-//! GPU Acceleration for Data Doctor
+//! GPU Acceleration for Byte Surgeon
 //!
 //! This module provides GPU-accelerated operations for signature scanning
 //! and other compute-intensive tasks using CUDA and OpenCL.

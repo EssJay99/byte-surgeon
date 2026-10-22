@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
-use datadoctor_core::{SignatureDatabase, scanner::MmapScanner};
+use bytesurgeon_core::{SignatureDatabase, scanner::MmapScanner};
 use rand::Rng;
 use std::io::Write;
 use tempfile::NamedTempFile;
@@ -94,7 +94,7 @@ fn bench_disk_signature_scanning(c: &mut Criterion) {
         group.throughput(Throughput::Bytes(*size as u64));
 
         group.bench_with_input(BenchmarkId::new("disk_scanner", label), size, |b, _| {
-            let scanner = datadoctor_core::DiskScanner::new(tmp.path().to_str().unwrap());
+            let scanner = bytesurgeon_core::DiskScanner::new(tmp.path().to_str().unwrap());
             b.iter(|| scanner.find_signatures().unwrap())
         });
     }

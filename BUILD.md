@@ -4,7 +4,7 @@
 
 ### Build CLI Only
 ```bash
-cargo build --release --bin datadoctor
+cargo build --release --bin bytesurgeon
 ```
 
 ### Build GUI Application
@@ -140,7 +140,7 @@ cargo test
 
 ### Run Specific Tests
 ```bash
-cargo test --package datadoctor-core
+cargo test --package bytesurgeon-core
 ```
 
 ### Run with Output
@@ -322,10 +322,10 @@ cargo build --release
 
 # Package CLI
 mkdir -p dist
-cp target/release/datadoctor dist/
+cp target/release/bytesurgeon dist/
 cp README.md dist/
 cp LICENSE dist/
-tar -czf datadoctor-1.0.0.tar.gz dist/
+tar -czf bytesurgeon-1.0.0.tar.gz dist/
 ```
 
 ### Docker Build
@@ -336,21 +336,21 @@ COPY . .
 RUN cargo build --release
 
 FROM debian:bullseye-slim
-COPY --from=builder /app/target/release/datadoctor /usr/local/bin/
-CMD ["datadoctor"]
+COPY --from=builder /app/target/release/bytesurgeon /usr/local/bin/
+CMD ["bytesurgeon"]
 ```
 
 Build Docker image:
 ```bash
-docker build -t datadoctor:latest .
+docker build -t bytesurgeon:latest .
 ```
 
 ## Support
 
 For build issues:
-- GitHub Issues: https://github.com/yourorg/datadoctor/issues
-- Discord: https://discord.gg/datadoctor
-- Email: support@datadoctor.com
+- GitHub Issues: https://github.com/yourorg/bytesurgeon/issues
+- Discord: https://discord.gg/bytesurgeon
+- Email: support@bytesurgeon.com
 
 ---
 

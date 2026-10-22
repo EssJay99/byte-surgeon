@@ -1,4 +1,4 @@
-//! Media Recovery for Data Doctor
+//! Media Recovery for Byte Surgeon
 //!
 //! This module provides specialized recovery for media files including:
 //! - Video frame-by-frame recovery

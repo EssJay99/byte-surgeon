@@ -1,6 +1,6 @@
 #![no_main]
 
-use datadoctor_chat::EmailRecoverer;
+use bytesurgeon_chat::EmailRecoverer;
 use libfuzzer_sys::fuzz_target;
 use std::io::Write;
 

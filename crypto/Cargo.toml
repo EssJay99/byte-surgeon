@@ -1,12 +1,12 @@
 [package]
-name = "datadoctor-crypto"
+name = "bytesurgeon-crypto"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 description = "Decryption and cryptography"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
+bytesurgeon-core = { path = "../core" }
 tokio.workspace = true
 thiserror.workspace = true
 anyhow.workspace = true

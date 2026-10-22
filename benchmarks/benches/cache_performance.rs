@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
-use datadoctor_core::SectorCache;
+use bytesurgeon_core::SectorCache;
 use rand::Rng;
 
 fn bench_cache_hit(c: &mut Criterion) {

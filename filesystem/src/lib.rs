@@ -10,7 +10,7 @@ pub use fat32::FAT32Parser;
 pub use ext4::EXT4Parser;
 pub use apfs::APFSParser;
 
-use datadoctor_core::{FileSystemType, Result};
+use bytesurgeon_core::{FileSystemType, Result};
 
 pub fn create_parser(fs_type: FileSystemType, device_path: &str) -> Result<Box<dyn FileSystem>> {
     match fs_type {
@@ -18,7 +18,7 @@ pub fn create_parser(fs_type: FileSystemType, device_path: &str) -> Result<Box<d
         FileSystemType::FAT32 => Ok(Box::new(FAT32Parser::new(device_path)?)),
         FileSystemType::EXT4 | FileSystemType::EXT3 => Ok(Box::new(EXT4Parser::new(device_path)?)),
         FileSystemType::APFS => Ok(Box::new(APFSParser::new(device_path)?)),
-        _ => Err(datadoctor_core::Error::UnsupportedFileSystem(format!("{:?}", fs_type))),
+        _ => Err(bytesurgeon_core::Error::UnsupportedFileSystem(format!("{:?}", fs_type))),
     }
 }
 

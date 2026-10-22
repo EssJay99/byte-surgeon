@@ -4,7 +4,7 @@ use serde::{Serialize, Deserialize};
 #[derive(Error, Debug)]
 pub enum SdkError {
     #[error("Core engine error: {0}")]
-    Core(#[from] datadoctor_core::Error),
+    Core(#[from] bytesurgeon_core::Error),
 
     #[error("Device error: {0}")]
     Device(String),
@@ -66,8 +66,8 @@ pub struct DeviceSummary {
     pub model: Option<String>,
 }
 
-impl From<datadoctor_core::DeviceInfo> for DeviceSummary {
-    fn from(d: datadoctor_core::DeviceInfo) -> Self {
+impl From<bytesurgeon_core::DeviceInfo> for DeviceSummary {
+    fn from(d: bytesurgeon_core::DeviceInfo) -> Self {
         Self {
             path: d.path,
             name: d.name,

@@ -1,9 +1,9 @@
-use datadoctor_sdk::{
+use bytesurgeon_sdk::{
     DeviceScanner, RecoveryBuilder, SignatureScanner,
     ProgressReporter,
     SignatureCategory,
 };
-use datadoctor_forensic;
+use bytesurgeon_forensic;
 
 fn main() {
     tracing_subscriber::fmt()
@@ -14,7 +14,7 @@ fn main() {
     let device_path = args.get(1).map(|s| s.as_str()).unwrap_or("/dev/sda");
     let output_dir = args.get(2).map(|s| s.as_str()).unwrap_or("./forensic_output");
 
-    println!("=== Data Doctor Forensic Workflow ===");
+    println!("=== Byte Surgeon Forensic Workflow ===");
     println!("Device:  {}", device_path);
     println!("Output:  {}", output_dir);
 
@@ -76,7 +76,7 @@ fn main() {
 
     println!("\n[Step 3] Forensic analysis");
 
-    let fragment_scanner = datadoctor_forensic::FragmentScanner::new();
+    let fragment_scanner = bytesurgeon_forensic::FragmentScanner::new();
     match fragment_scanner.scan(device_path) {
         Ok(fragments) => {
             println!("  Found {} file fragments", fragments.len());
@@ -92,7 +92,7 @@ fn main() {
         }
     }
 
-    let shadow_copy_detector = datadoctor_forensic::ShadowCopyDetector::new();
+    let shadow_copy_detector = bytesurgeon_forensic::ShadowCopyDetector::new();
     match shadow_copy_detector.detect(device_path) {
         Ok(copies) => {
             println!("  Found {} shadow copies", copies.len());
@@ -105,7 +105,7 @@ fn main() {
         }
     }
 
-    let usn_parser = datadoctor_forensic::UsnJournalParser::new();
+    let usn_parser = bytesurgeon_forensic::UsnJournalParser::new();
     match usn_parser.parse(device_path) {
         Ok(entries) => {
             println!("  Found {} USN journal entries", entries.len());

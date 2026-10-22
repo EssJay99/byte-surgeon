@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use byteorder::{BigEndian, ReadBytesExt};
 use tracing::{info, debug};
 
-use datadoctor_core::{Result, Error};
+use bytesurgeon_core::{Result, Error};
 use crate::{DiskImage, ImageMetadata};
 
 const VHD_MAGIC: &[u8; 8] = b"conectix";

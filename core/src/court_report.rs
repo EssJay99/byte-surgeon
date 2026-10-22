@@ -918,7 +918,7 @@ mod tests {
     }
 
     fn make_methodology() -> MethodologyEntry {
-        let mut method = MethodologyEntry::new("Data Doctor", "1.0.0", "Full disk image acquisition and file carving using signature-based recovery.");
+        let mut method = MethodologyEntry::new("Byte Surgeon", "1.0.0", "Full disk image acquisition and file carving using signature-based recovery.");
         method.add_validation_step("Hash verification of source image");
         method.add_validation_step("Write-blocked acquisition");
         method.add_validation_step("Cross-reference with known file signatures");

@@ -1,5 +1,5 @@
 use crate::error::{SdkError, SdkResult};
-use datadoctor_core::{
+use bytesurgeon_core::{
     SignatureDatabase, SignatureEntry, SignatureCategory,
     FileSignature,
     scanner::MmapScanner,

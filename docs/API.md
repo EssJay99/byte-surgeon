@@ -5,7 +5,7 @@
 The central orchestrator for all recovery operations.
 
 ```rust
-use datadoctor_core::RecoveryEngine;
+use bytesurgeon_core::RecoveryEngine;
 use std::path::Path;
 
 let engine = RecoveryEngine::new(Path::new("./data"))?;
@@ -18,7 +18,7 @@ let engine = RecoveryEngine::new(Path::new("./data"))?;
 Creates a new recovery engine instance. Initializes the database, audit logger, threat scanner, and security policy.
 
 ```rust
-let engine = RecoveryEngine::new(Path::new("/var/lib/datadoctor"))?;
+let engine = RecoveryEngine::new(Path::new("/var/lib/bytesurgeon"))?;
 ```
 
 **Errors:**
@@ -115,7 +115,7 @@ Cancels an active recovery session.
 Low-level disk scanning with signature detection.
 
 ```rust
-use datadoctor_core::DiskScanner;
+use bytesurgeon_core::DiskScanner;
 
 let scanner = DiskScanner::new("/dev/sda");
 ```
@@ -171,7 +171,7 @@ Returns `(current_position, bytes_scanned)`.
 Memory-mapped file scanner for high-performance scanning of large files.
 
 ```rust
-use datadoctor_core::scanner::MmapScanner;
+use bytesurgeon_core::scanner::MmapScanner;
 
 let scanner = MmapScanner::new();
 let results = scanner.scan_file("/path/to/large/file.img")?;
@@ -200,7 +200,7 @@ For files > 1GB, uses chunked mapping with overlap to handle signatures at chunk
 Extracts files from raw disk data based on signature matches.
 
 ```rust
-use datadoctor_core::FileCarver;
+use bytesurgeon_core::FileCarver;
 use std::path::Path;
 
 let carver = FileCarver::new(Path::new("./output"), "session-1");
@@ -253,7 +253,7 @@ let recovered = carver.carve_files_parallel("/dev/sda", &matches, |completed, to
 Pattern-based malware and threat detection.
 
 ```rust
-use datadoctor_core::ThreatScanner;
+use bytesurgeon_core::ThreatScanner;
 use std::path::Path;
 
 let scanner = ThreatScanner::new();
@@ -295,10 +295,10 @@ Verifies a file matches an expected SHA-256 hash.
 Append-only audit log for all operations.
 
 ```rust
-use datadoctor_core::AuditLogger;
+use bytesurgeon_core::AuditLogger;
 use std::path::Path;
 
-let logger = AuditLogger::new(Path::new("/var/log/datadoctor/audit.log"));
+let logger = AuditLogger::new(Path::new("/var/log/bytesurgeon/audit.log"));
 ```
 
 ### Methods
@@ -334,7 +334,7 @@ logger.log_threat_detection(Path::new("/tmp/suspicious.exe"), "malware")?;
 Configurable security policy for recovery operations.
 
 ```rust
-use datadoctor_core::SecurityPolicy;
+use bytesurgeon_core::SecurityPolicy;
 
 let policy = SecurityPolicy {
     allow_network_recovery: true,
@@ -352,9 +352,9 @@ let policy = SecurityPolicy {
 SQLite-backed persistent storage for sessions, devices, and recovered files.
 
 ```rust
-use datadoctor_core::Database;
+use bytesurgeon_core::Database;
 
-let db = Database::new(Path::new("./data/datadoctor.db"))?;
+let db = Database::new(Path::new("./data/bytesurgeon.db"))?;
 ```
 
 ### Methods
@@ -548,7 +548,7 @@ pub struct ScanProgress {
 ### WriteProtector
 
 ```rust
-use datadoctor_core::{WriteProtector, WriteProtectionStatus};
+use bytesurgeon_core::{WriteProtector, WriteProtectionStatus};
 
 let protector = WriteProtector::new("/dev/sda");
 let status = protector.status();
@@ -557,7 +557,7 @@ let status = protector.status();
 ### DeduplicationEngine
 
 ```rust
-use datadoctor_core::DeduplicationEngine;
+use bytesurgeon_core::DeduplicationEngine;
 
 let engine = DeduplicationEngine::new();
 ```
@@ -565,7 +565,7 @@ let engine = DeduplicationEngine::new();
 ### SmartDeduplicator
 
 ```rust
-use datadoctor_core::{SmartDeduplicator, DuplicateGroup, Sensitivity};
+use bytesurgeon_core::{SmartDeduplicator, DuplicateGroup, Sensitivity};
 
 let dedup = SmartDeduplicator::new();
 ```
@@ -573,7 +573,7 @@ let dedup = SmartDeduplicator::new();
 ### RecoveryFilter
 
 ```rust
-use datadoctor_core::{RecoveryFilter, RecoveryFilterBuilder};
+use bytesurgeon_core::{RecoveryFilter, RecoveryFilterBuilder};
 
 let filter = RecoveryFilterBuilder::new()
     .with_extensions(&["jpg", "png"])
@@ -584,7 +584,7 @@ let filter = RecoveryFilterBuilder::new()
 ### CheckpointManager
 
 ```rust
-use datadoctor_core::{CheckpointManager, CheckpointConfig};
+use bytesurgeon_core::{CheckpointManager, CheckpointConfig};
 
 let manager = CheckpointManager::new(CheckpointConfig::default());
 ```
@@ -592,7 +592,7 @@ let manager = CheckpointManager::new(CheckpointConfig::default());
 ### StreamProcessor
 
 ```rust
-use datadoctor_core::{StreamProcessor, StreamChunk};
+use bytesurgeon_core::{StreamProcessor, StreamChunk};
 
 let processor = StreamProcessor::new();
 ```
@@ -600,7 +600,7 @@ let processor = StreamProcessor::new();
 ### SectorCache
 
 ```rust
-use datadoctor_core::SectorCache;
+use bytesurgeon_core::SectorCache;
 
 let cache = SectorCache::new();
 ```
@@ -608,7 +608,7 @@ let cache = SectorCache::new();
 ### UndoManager
 
 ```rust
-use datadoctor_core::{UndoManager, UndoAction};
+use bytesurgeon_core::{UndoManager, UndoAction};
 
 let manager = UndoManager::new();
 ```
@@ -616,7 +616,7 @@ let manager = UndoManager::new();
 ### BackupManager
 
 ```rust
-use datadoctor_core::{BackupManager, BackupPolicy};
+use bytesurgeon_core::{BackupManager, BackupPolicy};
 
 let manager = BackupManager::new(BackupPolicy::default());
 ```
@@ -624,7 +624,7 @@ let manager = BackupManager::new(BackupPolicy::default());
 ### ErrorRecovery
 
 ```rust
-use datadoctor_core::{ErrorRecovery, ErrorRecoveryStrategy};
+use bytesurgeon_core::{ErrorRecovery, ErrorRecoveryStrategy};
 
 let recovery = ErrorRecovery::new(ErrorRecoveryStrategy::default());
 ```
@@ -632,7 +632,7 @@ let recovery = ErrorRecovery::new(ErrorRecoveryStrategy::default());
 ### EvidenceHasher
 
 ```rust
-use datadoctor_core::{EvidenceHasher, EvidenceChain};
+use bytesurgeon_core::{EvidenceHasher, EvidenceChain};
 
 let hasher = EvidenceHasher::new();
 ```
@@ -640,7 +640,7 @@ let hasher = EvidenceHasher::new();
 ### Examiner / ExaminerManager
 
 ```rust
-use datadoctor_core::{ExaminerManager, Role};
+use bytesurgeon_core::{ExaminerManager, Role};
 
 let manager = ExaminerManager::new();
 ```
@@ -648,7 +648,7 @@ let manager = ExaminerManager::new();
 ### CourtReportGenerator
 
 ```rust
-use datadoctor_core::{CourtReportGenerator, CaseInfo, ExaminerInfo};
+use bytesurgeon_core::{CourtReportGenerator, CaseInfo, ExaminerInfo};
 
 let generator = CourtReportGenerator::new();
 ```
@@ -656,7 +656,7 @@ let generator = CourtReportGenerator::new();
 ### DryRunExecutor
 
 ```rust
-use datadoctor_core::{DryRunExecutor, DryRunContext};
+use bytesurgeon_core::{DryRunExecutor, DryRunContext};
 
 let executor = DryRunExecutor::new();
 ```
@@ -664,7 +664,7 @@ let executor = DryRunExecutor::new();
 ### MetadataPreserver
 
 ```rust
-use datadoctor_core::{MetadataPreserver, MetadataSnapshot};
+use bytesurgeon_core::{MetadataPreserver, MetadataSnapshot};
 
 let preserver = MetadataPreserver::new();
 ```
@@ -672,7 +672,7 @@ let preserver = MetadataPreserver::new();
 ### FilePreviewer
 
 ```rust
-use datadoctor_core::{FilePreviewer, PreviewData};
+use bytesurgeon_core::{FilePreviewer, PreviewData};
 
 let previewer = FilePreviewer::new();
 ```
@@ -680,7 +680,7 @@ let previewer = FilePreviewer::new();
 ### HexViewer
 
 ```rust
-use datadoctor_core::{HexViewer, HexDump};
+use bytesurgeon_core::{HexViewer, HexDump};
 
 let viewer = HexViewer::new();
 ```
@@ -688,7 +688,7 @@ let viewer = HexViewer::new();
 ### ReportGenerator
 
 ```rust
-use datadoctor_core::{ReportGenerator, ReportData};
+use bytesurgeon_core::{ReportGenerator, ReportData};
 
 let generator = ReportGenerator::new();
 ```
@@ -700,16 +700,16 @@ let generator = ReportGenerator::new();
 ### Detect File System
 
 ```rust
-use datadoctor_filesystem::detect_filesystem;
+use bytesurgeon_filesystem::detect_filesystem;
 
-let fs_type = datadoctor_filesystem::detect_filesystem("/dev/sda1")?;
+let fs_type = bytesurgeon_filesystem::detect_filesystem("/dev/sda1")?;
 ```
 
 ### Create Parser
 
 ```rust
-use datadoctor_filesystem::create_parser;
-use datadoctor_core::FileSystemType;
+use bytesurgeon_filesystem::create_parser;
+use bytesurgeon_core::FileSystemType;
 
 let parser = create_parser(FileSystemType::NTFS, "/dev/sda1")?;
 ```
@@ -731,7 +731,7 @@ pub trait FileSystem {
 ### Volume Types
 
 ```rust
-use datadoctor_encryption::{VolumeType, EncryptedVolume, UnlockedVolume};
+use bytesurgeon_encryption::{VolumeType, EncryptedVolume, UnlockedVolume};
 ```
 
 | Type | Description |
@@ -748,7 +748,7 @@ use datadoctor_encryption::{VolumeType, EncryptedVolume, UnlockedVolume};
 ### CaseManager
 
 ```rust
-use datadoctor_enterprise::CaseManager;
+use bytesurgeon_enterprise::CaseManager;
 
 let case_mgr = CaseManager::new();
 let case_id = case_mgr.create_case("CASE-001", "John Doe")?;
@@ -759,7 +759,7 @@ let report = case_mgr.generate_report(&case_id)?;
 ### BatchProcessor
 
 ```rust
-use datadoctor_enterprise::BatchProcessor;
+use bytesurgeon_enterprise::BatchProcessor;
 
 let processor = BatchProcessor::new();
 let job_id = processor.add_job("/dev/sda", "./output", "signature")?;
@@ -770,7 +770,7 @@ let status = processor.status()?;
 ### ScanManager
 
 ```rust
-use datadoctor_enterprise::ScanManager;
+use bytesurgeon_enterprise::ScanManager;
 
 let manager = ScanManager::new();
 let interrupted = manager.list_interrupted_scans()?;
@@ -780,7 +780,7 @@ let state = manager.resume_scan("/dev/sda")?;
 ### ApiServer
 
 ```rust
-use datadoctor_enterprise::ApiServer;
+use bytesurgeon_enterprise::ApiServer;
 
 let server = ApiServer::new();
 server.start(8080)?;
@@ -791,7 +791,7 @@ server.start(8080)?;
 ## Compliance Module
 
 ```rust
-use datadoctor_security::compliance::ComplianceChecker;
+use bytesurgeon_security::compliance::ComplianceChecker;
 
 let checker = ComplianceChecker::new();
 let report = checker.check_nist_compliance()?;

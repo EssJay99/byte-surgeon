@@ -1,6 +1,6 @@
 use crate::error::{SdkError, SdkResult, DeviceSummary};
-use datadoctor_core::{DeviceInfo, DeviceType, FileSystemType};
-use datadoctor_devices::DeviceDetector;
+use bytesurgeon_core::{DeviceInfo, DeviceType, FileSystemType};
+use bytesurgeon_devices::DeviceDetector;
 
 pub struct DeviceScanner {
     detector: DeviceDetector,

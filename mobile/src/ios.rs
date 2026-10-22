@@ -1,5 +1,5 @@
 use crate::MobileDevice;
-use datadoctor_core::{Result, DeviceInfo, DeviceType};
+use bytesurgeon_core::{Result, DeviceInfo, DeviceType};
 use tracing::{info, debug};
 
 pub struct IOSDevice {

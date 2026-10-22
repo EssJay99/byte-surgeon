@@ -1,4 +1,4 @@
-use datadoctor_core::{Result, DeviceInfo};
+use bytesurgeon_core::{Result, DeviceInfo};
 
 pub struct USBDevice;
 

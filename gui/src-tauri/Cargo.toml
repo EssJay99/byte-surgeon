@@ -1,27 +1,27 @@
 [package]
-name = "datadoctor-gui"
+name = "bytesurgeon-gui"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
-description = "GUI application for Data Doctor"
+description = "GUI application for Byte Surgeon"
 
 [build-dependencies]
 tauri-build = { version = "1.5", features = [] }
 
 [dependencies]
-datadoctor-core = { path = "../../core" }
-datadoctor-devices = { path = "../../devices" }
-datadoctor-filesystem = { path = "../../filesystem" }
-datadoctor-network = { path = "../../network" }
-datadoctor-mobile = { path = "../../mobile" }
-datadoctor-security = { path = "../../security" }
-datadoctor-crypto = { path = "../../crypto" }
-datadoctor-diskimage = { path = "../../diskimage" }
-datadoctor-encryption = { path = "../../encryption" }
-datadoctor-raid = { path = "../../raid" }
-datadoctor-forensic = { path = "../../forensic" }
-datadoctor-chat = { path = "../../chat" }
-datadoctor-enterprise = { path = "../../enterprise" }
+bytesurgeon-core = { path = "../../core" }
+bytesurgeon-devices = { path = "../../devices" }
+bytesurgeon-filesystem = { path = "../../filesystem" }
+bytesurgeon-network = { path = "../../network" }
+bytesurgeon-mobile = { path = "../../mobile" }
+bytesurgeon-security = { path = "../../security" }
+bytesurgeon-crypto = { path = "../../crypto" }
+bytesurgeon-diskimage = { path = "../../diskimage" }
+bytesurgeon-encryption = { path = "../../encryption" }
+bytesurgeon-raid = { path = "../../raid" }
+bytesurgeon-forensic = { path = "../../forensic" }
+bytesurgeon-chat = { path = "../../chat" }
+bytesurgeon-enterprise = { path = "../../enterprise" }
 tauri = { version = "1.6", features = ["shell-open"] }
 serde.workspace = true
 serde_json.workspace = true

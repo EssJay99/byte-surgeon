@@ -1,4 +1,4 @@
-use datadoctor_core::{Result, FileMetadata};
+use bytesurgeon_core::{Result, FileMetadata};
 use chrono::{DateTime, Utc};
 
 pub trait FileSystem {

@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
-use datadoctor_filesystem::FileSystem;
+use bytesurgeon_filesystem::FileSystem;
 use std::io::Write;
 use tempfile::NamedTempFile;
 
@@ -131,7 +131,7 @@ fn bench_ntfs_superblock(c: &mut Criterion) {
 
         group.bench_with_input(BenchmarkId::new("ntfs_superblock", label), size, |b, _| {
             b.iter(|| {
-                let parser = datadoctor_filesystem::NTFSParser::new(tmp.path().to_str().unwrap()).unwrap();
+                let parser = bytesurgeon_filesystem::NTFSParser::new(tmp.path().to_str().unwrap()).unwrap();
                 parser.read_superblock().unwrap()
             })
         });
@@ -157,7 +157,7 @@ fn bench_fat32_superblock(c: &mut Criterion) {
 
         group.bench_with_input(BenchmarkId::new("fat32_superblock", label), size, |b, _| {
             b.iter(|| {
-                let parser = datadoctor_filesystem::FAT32Parser::new(tmp.path().to_str().unwrap()).unwrap();
+                let parser = bytesurgeon_filesystem::FAT32Parser::new(tmp.path().to_str().unwrap()).unwrap();
                 parser.read_superblock().unwrap()
             })
         });
@@ -183,7 +183,7 @@ fn bench_ext4_superblock(c: &mut Criterion) {
 
         group.bench_with_input(BenchmarkId::new("ext4_superblock", label), size, |b, _| {
             b.iter(|| {
-                let parser = datadoctor_filesystem::EXT4Parser::new(tmp.path().to_str().unwrap()).unwrap();
+                let parser = bytesurgeon_filesystem::EXT4Parser::new(tmp.path().to_str().unwrap()).unwrap();
                 parser.read_superblock().unwrap()
             })
         });
@@ -211,13 +211,13 @@ fn bench_filesystem_detection(c: &mut Criterion) {
     ext4_tmp.flush().unwrap();
 
     group.bench_function("detect_ntfs", |b| {
-        b.iter(|| datadoctor_filesystem::detect_filesystem(ntfs_tmp.path().to_str().unwrap()))
+        b.iter(|| bytesurgeon_filesystem::detect_filesystem(ntfs_tmp.path().to_str().unwrap()))
     });
     group.bench_function("detect_fat32", |b| {
-        b.iter(|| datadoctor_filesystem::detect_filesystem(fat32_tmp.path().to_str().unwrap()))
+        b.iter(|| bytesurgeon_filesystem::detect_filesystem(fat32_tmp.path().to_str().unwrap()))
     });
     group.bench_function("detect_ext4", |b| {
-        b.iter(|| datadoctor_filesystem::detect_filesystem(ext4_tmp.path().to_str().unwrap()))
+        b.iter(|| bytesurgeon_filesystem::detect_filesystem(ext4_tmp.path().to_str().unwrap()))
     });
 
     group.finish();

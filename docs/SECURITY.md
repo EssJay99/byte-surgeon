@@ -2,7 +2,7 @@
 
 ## Overview
 
-Data Doctor is built with security as a foundational principle. The entire codebase is written in Rust, providing memory safety without garbage collection, and implements defense-in-depth across all layers.
+Byte Surgeon is built with security as a foundational principle. The entire codebase is written in Rust, providing memory safety without garbage collection, and implements defense-in-depth across all layers.
 
 This document covers the security architecture, threat model, best practices, and vulnerability reporting procedures.
 
@@ -32,7 +32,7 @@ This document covers the security architecture, threat model, best practices, an
 The `ThreatScanner` engine performs multi-layer analysis:
 
 ```rust
-use datadoctor_core::ThreatScanner;
+use bytesurgeon_core::ThreatScanner;
 
 let scanner = ThreatScanner::new();
 ```
@@ -58,7 +58,7 @@ let scanner = ThreatScanner::new();
 ### Integrity Verification
 
 ```rust
-use datadoctor_core::ThreatScanner;
+use bytesurgeon_core::ThreatScanner;
 use std::path::Path;
 
 let scanner = ThreatScanner::new();
@@ -77,9 +77,9 @@ Every recovered file receives a SHA-256 hash stored in `RecoveredFile.signature`
 All operations are logged with timestamps via `AuditLogger`:
 
 ```rust
-use datadoctor_core::AuditLogger;
+use bytesurgeon_core::AuditLogger;
 
-let logger = AuditLogger::new(Path::new("/var/log/datadoctor/audit.log"));
+let logger = AuditLogger::new(Path::new("/var/log/bytesurgeon/audit.log"));
 logger.log_operation("RECOVERY_START", "Device: /dev/sda, Type: Signature")?;
 logger.log_security_event("THREAT_DETECTED", "File: /tmp/suspicious.exe")?;
 logger.log_threat_detection(Path::new("/tmp/suspicious.exe"), "malware")?;
@@ -88,7 +88,7 @@ logger.log_threat_detection(Path::new("/tmp/suspicious.exe"), "malware")?;
 ### Tamper-Proof Audit Trail
 
 ```rust
-use datadoctor_core::tamper_proof_audit;
+use bytesurgeon_core::tamper_proof_audit;
 ```
 
 Hash-chained audit entries prevent log tampering.
@@ -96,7 +96,7 @@ Hash-chained audit entries prevent log tampering.
 ### Evidence Chain of Custody
 
 ```rust
-use datadoctor_core::{EvidenceHasher, EvidenceChain, HashChainEntry, VerificationResult};
+use bytesurgeon_core::{EvidenceHasher, EvidenceChain, HashChainEntry, VerificationResult};
 
 let hasher = EvidenceHasher::new();
 ```
@@ -106,7 +106,7 @@ Cryptographic hash chains verify the integrity of evidence throughout the recove
 ### Write Protection
 
 ```rust
-use datadoctor_core::{WriteProtector, WriteProtectionStatus, AuditEntry};
+use bytesurgeon_core::{WriteProtector, WriteProtectionStatus, AuditEntry};
 
 let protector = WriteProtector::new("/dev/sda");
 ```
@@ -116,7 +116,7 @@ Hardware and software write-blocking prevents accidental modification of source 
 ### Security Policy Enforcement
 
 ```rust
-use datadoctor_core::SecurityPolicy;
+use bytesurgeon_core::SecurityPolicy;
 
 let policy = SecurityPolicy {
     allow_network_recovery: true,
@@ -266,7 +266,7 @@ let policy = SecurityPolicy {
    - Rate-limit API endpoints
 
 3. **Compliance**
-   - Run compliance checks regularly: `datadoctor compliance`
+   - Run compliance checks regularly: `bytesurgeon compliance`
    - Maintain evidence chain of custody
    - Generate court-ready reports with `CourtReportGenerator`
 
@@ -281,7 +281,7 @@ let policy = SecurityPolicy {
 
 ### NIST SP 800-53 Rev 5
 
-Data Doctor aligns with the following control families:
+Byte Surgeon aligns with the following control families:
 
 | Control Family | Implementation |
 |---------------|----------------|
@@ -306,7 +306,7 @@ Data Doctor aligns with the following control families:
 ### Compliance Checking
 
 ```rust
-use datadoctor_security::compliance::ComplianceChecker;
+use bytesurgeon_security::compliance::ComplianceChecker;
 
 let checker = ComplianceChecker::new();
 let report = checker.check_nist_compliance()?;
@@ -352,7 +352,7 @@ for rec in &report.recommendations {
 ### Process
 
 1. **DO NOT** create a public GitHub issue for security vulnerabilities
-2. Email **security@datadoctor.com** with details
+2. Email **security@bytesurgeon.com** with details
 3. Include:
    - Description of the vulnerability
    - Steps to reproduce
@@ -382,15 +382,15 @@ for rec in &report.recommendations {
 
 | Role | Contact |
 |------|---------|
-| Security Team | security@datadoctor.com |
-| CISO | ciso@datadoctor.com |
-| Emergency | emergency@datadoctor.com |
+| Security Team | security@bytesurgeon.com |
+| CISO | ciso@bytesurgeon.com |
+| Emergency | emergency@bytesurgeon.com |
 
 ---
 
 ## Security Checklist
 
-Before deploying Data Doctor:
+Before deploying Byte Surgeon:
 
 - [ ] Latest version installed with all security patches
 - [ ] Audit logging enabled and reviewed
@@ -399,7 +399,7 @@ Before deploying Data Doctor:
 - [ ] Network security reviewed (TLS, API keys)
 - [ ] Backup procedures tested
 - [ ] Incident response plan documented
-- [ ] Compliance check passed (`datadoctor compliance`)
+- [ ] Compliance check passed (`bytesurgeon compliance`)
 - [ ] Write protection enabled for source media
 - [ ] Evidence chain of custody established
 

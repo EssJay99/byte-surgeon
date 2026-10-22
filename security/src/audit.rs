@@ -1,4 +1,4 @@
-use datadoctor_core::Result;
+use bytesurgeon_core::Result;
 use std::path::{Path, PathBuf};
 use std::fs::OpenOptions;
 use std::io::Write;

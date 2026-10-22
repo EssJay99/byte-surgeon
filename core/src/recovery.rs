@@ -18,7 +18,7 @@ impl RecoveryEngine {
     pub fn new(data_dir: &Path) -> Result<Self> {
         std::fs::create_dir_all(data_dir)?;
 
-        let db_path = data_dir.join("datadoctor.db");
+        let db_path = data_dir.join("bytesurgeon.db");
         let db = Database::new(&db_path)?;
 
         let audit_path = data_dir.join("audit.log");

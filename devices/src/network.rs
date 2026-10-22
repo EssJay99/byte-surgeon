@@ -1,4 +1,4 @@
-use datadoctor_core::{Result, DeviceInfo};
+use bytesurgeon_core::{Result, DeviceInfo};
 use tracing::info;
 
 pub struct NetworkDevice;

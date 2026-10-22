@@ -1,10 +1,10 @@
-# Data Doctor API Documentation
+# Byte Surgeon API Documentation
 
 ## Overview
 
-Welcome to the Data Doctor API documentation. This guide provides comprehensive reference material for developers integrating with or extending the Data Doctor data recovery platform.
+Welcome to the Byte Surgeon API documentation. This guide provides comprehensive reference material for developers integrating with or extending the Byte Surgeon data recovery platform.
 
-Data Doctor is a cross-platform data recovery solution built with Rust, offering high-performance scanning, multiple recovery modes, security compliance, and an extensible plugin architecture.
+Byte Surgeon is a cross-platform data recovery solution built with Rust, offering high-performance scanning, multiple recovery modes, security compliance, and an extensible plugin architecture.
 
 ## Architecture
 
@@ -29,7 +29,7 @@ Data Doctor is a cross-platform data recovery solution built with Rust, offering
     │  │ Database │  │AuditLog  │  │SecurityPolicy    │  │
     │  └──────────┘  └──────────┘  └──────────────────┘  │
     │                                                    │
-    │              Core Engine (datadoctor-core)        │
+    │              Core Engine (bytesurgeon-core)        │
     └────────────────────────────────────────────────────┘
               │
     ┌─────────┼─────────────────────────────────────────┐
@@ -50,22 +50,22 @@ Data Doctor is a cross-platform data recovery solution built with Rust, offering
 
 | Crate | Description |
 |-------|-------------|
-| `datadoctor-core` | Core recovery engine, models, scanning, carving |
-| `datadoctor-filesystem` | NTFS, FAT32, ext4, APFS parsers |
-| `datadoctor-devices` | Device detection and abstraction |
-| `datadoctor-network` | Network discovery (SMB, NFS) |
-| `datadoctor-mobile` | Android and iOS recovery |
-| `datadoctor-security` | Threat detection and compliance |
-| `datadoctor-crypto` | Password decryption engine |
-| `datadoctor-encryption` | Volume encryption (BitLocker, FileVault, LUKS, VeraCrypt) |
-| `datadoctor-enterprise` | Case management, batch processing, API server |
-| `datadoctor-forensic` | Shadow copies, USN journal, registry, fragments |
-| `datadoctor-raid` | RAID 0/1/5/6 reconstruction |
-| `datadoctor-chat` | Chat message extraction (iMessage, WhatsApp, Signal, Slack) |
-| `datadoctor-ml` | Machine learning classification |
+| `bytesurgeon-core` | Core recovery engine, models, scanning, carving |
+| `bytesurgeon-filesystem` | NTFS, FAT32, ext4, APFS parsers |
+| `bytesurgeon-devices` | Device detection and abstraction |
+| `bytesurgeon-network` | Network discovery (SMB, NFS) |
+| `bytesurgeon-mobile` | Android and iOS recovery |
+| `bytesurgeon-security` | Threat detection and compliance |
+| `bytesurgeon-crypto` | Password decryption engine |
+| `bytesurgeon-encryption` | Volume encryption (BitLocker, FileVault, LUKS, VeraCrypt) |
+| `bytesurgeon-enterprise` | Case management, batch processing, API server |
+| `bytesurgeon-forensic` | Shadow copies, USN journal, registry, fragments |
+| `bytesurgeon-raid` | RAID 0/1/5/6 reconstruction |
+| `bytesurgeon-chat` | Chat message extraction (iMessage, WhatsApp, Signal, Slack) |
+| `bytesurgeon-ml` | Machine learning classification |
 | `tle-plugins` | Plugin system with dynamic loading |
-| `datadoctor-cli` | Command-line interface |
-| `datadoctor-gui` | Tauri-based GUI application |
+| `bytesurgeon-cli` | Command-line interface |
+| `bytesurgeon-gui` | Tauri-based GUI application |
 
 ---
 
@@ -85,8 +85,8 @@ Data Doctor is a cross-platform data recovery solution built with Rust, offering
 #### From Source
 
 ```bash
-git clone https://github.com/yourorg/datadoctor.git
-cd datadoctor
+git clone https://github.com/yourorg/bytesurgeon.git
+cd bytesurgeon
 cargo build --release
 cargo install --path cli
 ```
@@ -114,10 +114,10 @@ cargo build --release
 ### Basic Usage
 
 ```rust
-use datadoctor_core::{RecoveryEngine, ScanType};
+use bytesurgeon_core::{RecoveryEngine, ScanType};
 use std::path::Path;
 
-fn main() -> datadoctor_core::Result<()> {
+fn main() -> bytesurgeon_core::Result<()> {
     let engine = RecoveryEngine::new(Path::new("./data"))?;
 
     // Enumerate devices
@@ -217,7 +217,7 @@ fn main() -> datadoctor_core::Result<()> {
 ### File System Detection
 
 ```rust
-use datadoctor_filesystem::detect_filesystem;
+use bytesurgeon_filesystem::detect_filesystem;
 
 let fs_type = detect_filesystem("/dev/sda1")?;
 println!("Detected: {:?}", fs_type);
@@ -226,7 +226,7 @@ println!("Detected: {:?}", fs_type);
 ### Threat Scanning
 
 ```rust
-use datadoctor_core::ThreatScanner;
+use bytesurgeon_core::ThreatScanner;
 use std::path::Path;
 
 let scanner = ThreatScanner::new();
@@ -238,7 +238,7 @@ let valid = scanner.verify_file_integrity(Path::new("/path/to/file"), &hash)?;
 ### Parallel File Carving
 
 ```rust
-use datadoctor_core::{FileCarver, DiskScanner};
+use bytesurgeon_core::{FileCarver, DiskScanner};
 use std::path::Path;
 
 let scanner = DiskScanner::new("/dev/sda");
@@ -257,7 +257,7 @@ let recovered = carver.carve_files_parallel(
 ### Deduplication
 
 ```rust
-use datadoctor_core::{DeduplicationEngine, SmartDeduplicator};
+use bytesurgeon_core::{DeduplicationEngine, SmartDeduplicator};
 
 let engine = DeduplicationEngine::new();
 let dedup = SmartDeduplicator::new();
@@ -266,7 +266,7 @@ let dedup = SmartDeduplicator::new();
 ### Enterprise Case Management
 
 ```rust
-use datadoctor_enterprise::CaseManager;
+use bytesurgeon_enterprise::CaseManager;
 
 let case_mgr = CaseManager::new();
 let case_id = case_mgr.create_case("CASE-2026-001", "Examiner Name")?;
@@ -277,7 +277,7 @@ let report_path = case_mgr.generate_report(&case_id)?;
 ### Encryption Detection
 
 ```rust
-use datadoctor_encryption::{EncryptedVolume, VolumeType};
+use bytesurgeon_encryption::{EncryptedVolume, VolumeType};
 
 // Detect and unlock encrypted volumes
 ```
@@ -285,7 +285,7 @@ use datadoctor_encryption::{EncryptedVolume, VolumeType};
 ### Recovery Filters
 
 ```rust
-use datadoctor_core::{RecoveryFilter, RecoveryFilterBuilder};
+use bytesurgeon_core::{RecoveryFilter, RecoveryFilterBuilder};
 
 let filter = RecoveryFilterBuilder::new()
     .with_extensions(&["jpg", "png", "pdf"])
@@ -297,7 +297,7 @@ let filter = RecoveryFilterBuilder::new()
 ### Dry Run
 
 ```rust
-use datadoctor_core::{DryRunExecutor, DryRunContext};
+use bytesurgeon_core::{DryRunExecutor, DryRunContext};
 
 let executor = DryRunExecutor::new();
 ```
@@ -305,7 +305,7 @@ let executor = DryRunExecutor::new();
 ### Stream Processing
 
 ```rust
-use datadoctor_core::{StreamProcessor, StreamChunk};
+use bytesurgeon_core::{StreamProcessor, StreamChunk};
 
 let processor = StreamProcessor::new();
 ```
@@ -314,7 +314,7 @@ let processor = StreamProcessor::new();
 
 ## Error Handling
 
-All core operations return `datadoctor_core::Result<T>`:
+All core operations return `bytesurgeon_core::Result<T>`:
 
 ```rust
 pub type Result<T> = std::result::Result<T, Error>;
@@ -342,7 +342,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 ### Error Handling Example
 
 ```rust
-use datadoctor_core::{RecoveryEngine, Error};
+use bytesurgeon_core::{RecoveryEngine, Error};
 use std::path::Path;
 
 match RecoveryEngine::new(Path::new("./data")) {
@@ -421,7 +421,7 @@ Typical benchmarks on modern hardware (NVMe SSD):
 
 ## Versioning
 
-Data Doctor follows semantic versioning: `MAJOR.MINOR.PATCH`
+Byte Surgeon follows semantic versioning: `MAJOR.MINOR.PATCH`
 
 - **1.0.0**: Initial release
 - **1.1.0** (Q1 2026): RAID reconstruction, cloud recovery

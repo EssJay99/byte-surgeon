@@ -1,4 +1,4 @@
-# Fuzz Testing for TLE (Data Doctor)
+# Fuzz Testing for TLE (Byte Surgeon)
 
 Fuzz testing infrastructure targeting parsers and recovery engines to find edge cases, crashes, and panics.
 

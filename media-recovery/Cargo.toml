@@ -1,13 +1,13 @@
 [package]
-name = "datadoctor-media"
+name = "bytesurgeon-media"
 version = "1.0.0"
 edition = "2021"
-authors = ["Data Doctor Team"]
+authors = ["Byte Surgeon Team"]
 description = "Media recovery for video, audio, and images"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
-datadoctor-filesystem = { path = "../filesystem" }
+bytesurgeon-core = { path = "../core" }
+bytesurgeon-filesystem = { path = "../filesystem" }
 tokio = { workspace = true }
 async-trait = { workspace = true }
 thiserror = { workspace = true }

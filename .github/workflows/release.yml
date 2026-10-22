@@ -22,23 +22,23 @@ jobs:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             ext: ""
-            asset_name: datadoctor-linux-x86_64
+            asset_name: bytesurgeon-linux-x86_64
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             ext: ""
-            asset_name: datadoctor-linux-aarch64
+            asset_name: bytesurgeon-linux-aarch64
           - os: macos-latest
             target: x86_64-apple-darwin
             ext: ""
-            asset_name: datadoctor-macos-x86_64
+            asset_name: bytesurgeon-macos-x86_64
           - os: macos-latest
             target: aarch64-apple-darwin
             ext: ""
-            asset_name: datadoctor-macos-aarch64
+            asset_name: bytesurgeon-macos-aarch64
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             ext: ".exe"
-            asset_name: datadoctor-windows-x86_64
+            asset_name: bytesurgeon-windows-x86_64
     steps:
       - uses: actions/checkout@v4
 
@@ -72,14 +72,14 @@ jobs:
         if: runner.os != 'Windows'
         run: |
           mkdir -p release
-          cp target/${{ matrix.target }}/release/datadoctor${{ matrix.ext }} release/${{ matrix.asset_name }}${{ matrix.ext }}
+          cp target/${{ matrix.target }}/release/bytesurgeon${{ matrix.ext }} release/${{ matrix.asset_name }}${{ matrix.ext }}
           chmod +x release/${{ matrix.asset_name }}${{ matrix.ext }}
 
       - name: Prepare artifact (Windows)
         if: runner.os == 'Windows'
         run: |
           mkdir release
-          cp target/${{ matrix.target }}/release/datadoctor${{ matrix.ext }} release/${{ matrix.asset_name }}${{ matrix.ext }}
+          cp target/${{ matrix.target }}/release/bytesurgeon${{ matrix.ext }} release/${{ matrix.asset_name }}${{ matrix.ext }}
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
@@ -157,7 +157,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          name: Data Doctor ${{ github.ref_name }}
+          name: Byte Surgeon ${{ github.ref_name }}
           body: |
             ## What's Changed
 
@@ -166,11 +166,11 @@ jobs:
             ## Installation
 
             Download the appropriate binary for your platform:
-            - **Linux x86_64**: `datadoctor-linux-x86_64.tar.gz`
-            - **Linux ARM64**: `datadoctor-linux-aarch64.tar.gz`
-            - **macOS x86_64**: `datadoctor-macos-x86_64.tar.gz`
-            - **macOS ARM64**: `datadoctor-macos-aarch64.tar.gz`
-            - **Windows x86_64**: `datadoctor-windows-x86_64.zip`
+            - **Linux x86_64**: `bytesurgeon-linux-x86_64.tar.gz`
+            - **Linux ARM64**: `bytesurgeon-linux-aarch64.tar.gz`
+            - **macOS x86_64**: `bytesurgeon-macos-x86_64.tar.gz`
+            - **macOS ARM64**: `bytesurgeon-macos-aarch64.tar.gz`
+            - **Windows x86_64**: `bytesurgeon-windows-x86_64.zip`
 
             ## Checksums
             ```

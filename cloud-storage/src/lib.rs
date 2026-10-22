@@ -1,4 +1,4 @@
-//! Cloud Storage Recovery for Data Doctor
+//! Cloud Storage Recovery for Byte Surgeon
 //!
 //! This module provides recovery capabilities for cloud storage services:
 //! - AWS S3

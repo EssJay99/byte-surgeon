@@ -1,6 +1,6 @@
 #![no_main]
 
-use datadoctor_chat::{WhatsAppRecoverer, IMessageRecoverer, SqliteCarver};
+use bytesurgeon_chat::{WhatsAppRecoverer, IMessageRecoverer, SqliteCarver};
 use libfuzzer_sys::fuzz_target;
 use std::io::Write;
 

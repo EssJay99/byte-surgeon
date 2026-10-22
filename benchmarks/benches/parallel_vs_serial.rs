@@ -1,7 +1,7 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
-use datadoctor_core::{DiskScanner, FileCarver, scanner::MmapScanner};
-use datadoctor_core::scanner::SignatureMatch;
-use datadoctor_core::FileSignature;
+use bytesurgeon_core::{DiskScanner, FileCarver, scanner::MmapScanner};
+use bytesurgeon_core::scanner::SignatureMatch;
+use bytesurgeon_core::FileSignature;
 use rand::Rng;
 use std::io::Write;
 use tempfile::{NamedTempFile, TempDir};

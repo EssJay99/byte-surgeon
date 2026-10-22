@@ -1,12 +1,12 @@
 [package]
-name = "datadoctor-network"
+name = "bytesurgeon-network"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 description = "Network discovery and scanning"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
+bytesurgeon-core = { path = "../core" }
 tokio.workspace = true
 thiserror.workspace = true
 anyhow.workspace = true

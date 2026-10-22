@@ -1,4 +1,4 @@
-use datadoctor_sdk::RecoveryBuilder;
+use bytesurgeon_sdk::RecoveryBuilder;
 
 fn main() {
     tracing_subscriber::fmt()

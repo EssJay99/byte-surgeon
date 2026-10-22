@@ -1,5 +1,5 @@
 use crate::error::{SdkError, SdkResult};
-use datadoctor_core::{
+use bytesurgeon_core::{
     RecoveryEngine, RecoveredFile, ScanType,
     DeviceInfo, RecoveryStatus,
     RecoveryFilter,
@@ -31,7 +31,7 @@ pub struct RecoveryReport {
 impl RecoveryBuilder {
     pub fn new() -> Self {
         Self {
-            data_dir: PathBuf::from("./datadoctor_data"),
+            data_dir: PathBuf::from("./bytesurgeon_data"),
             output_dir: PathBuf::from("./recovered"),
             scan_type: ScanType::Deep,
             device_path: None,

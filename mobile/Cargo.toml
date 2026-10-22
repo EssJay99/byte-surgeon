@@ -1,12 +1,12 @@
 [package]
-name = "datadoctor-mobile"
+name = "bytesurgeon-mobile"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 description = "Mobile device recovery"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
+bytesurgeon-core = { path = "../core" }
 tokio.workspace = true
 thiserror.workspace = true
 anyhow.workspace = true

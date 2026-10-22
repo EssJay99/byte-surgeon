@@ -1,13 +1,13 @@
 [package]
-name = "datadoctor-cloud"
+name = "bytesurgeon-cloud"
 version = "1.0.0"
 edition = "2021"
-authors = ["Data Doctor Team"]
+authors = ["Byte Surgeon Team"]
 description = "Cloud storage recovery for AWS S3, Azure Blob, and GCP Storage"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
-datadoctor-filesystem = { path = "../filesystem" }
+bytesurgeon-core = { path = "../core" }
+bytesurgeon-filesystem = { path = "../filesystem" }
 tokio = { workspace = true }
 async-trait = { workspace = true }
 thiserror = { workspace = true }

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Data Doctor provides a dynamic plugin system that allows you to extend its functionality at runtime. Plugins are compiled as shared libraries (`cdylib`) and loaded on-demand via the `PluginManager`.
+Byte Surgeon provides a dynamic plugin system that allows you to extend its functionality at runtime. Plugins are compiled as shared libraries (`cdylib`) and loaded on-demand via the `PluginManager`.
 
 Plugins can transform data, add custom processing pipelines, integrate with external services, or implement custom recovery algorithms.
 
@@ -12,7 +12,7 @@ Plugins can transform data, add custom processing pipelines, integrate with exte
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                   Data Doctor Host                    │
+│                   Byte Surgeon Host                    │
 │                                                      │
 │  ┌──────────────────────────────────────────────────┐│
 │  │                PluginManager                      ││
@@ -216,7 +216,7 @@ Create `my_plugin.json` alongside the compiled library:
     "metadata": {
         "name": "my_plugin",
         "version": "1.0.0",
-        "description": "A custom Data Doctor plugin",
+        "description": "A custom Byte Surgeon plugin",
         "author": "Your Name",
         "entry_point": "create_plugin"
     },
@@ -366,7 +366,7 @@ manager.init_plugin(&plugin_name)?;
 Executes a plugin's `process()` method with the given input data.
 
 ```rust
-let input = serde_json::json!({"name": "Data Doctor"});
+let input = serde_json::json!({"name": "Byte Surgeon"});
 let result = manager.execute_plugin(&plugin_name, &input)?;
 println!("{}", result["greeting"]);
 ```

@@ -30,9 +30,9 @@ resolver = "2"
 [workspace.package]
 version = "1.0.0"
 edition = "2021"
-authors = ["Data Doctor Team"]
+authors = ["Byte Surgeon Team"]
 license = "Proprietary"
-repository = "https://github.com/yourorg/datadoctor"
+repository = "https://github.com/yourorg/bytesurgeon"
 description = "Advanced cross-platform data recovery software"
 
 [workspace.dependencies]

@@ -1,12 +1,12 @@
 [package]
-name = "datadoctor-enterprise"
+name = "bytesurgeon-enterprise"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 description = "Enterprise features for batch processing and case management"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
+bytesurgeon-core = { path = "../core" }
 tokio.workspace = true
 thiserror.workspace = true
 anyhow.workspace = true

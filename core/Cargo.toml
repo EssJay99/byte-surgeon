@@ -1,5 +1,5 @@
 [package]
-name = "datadoctor-core"
+name = "bytesurgeon-core"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true

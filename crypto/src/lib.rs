@@ -1,7 +1,7 @@
 pub mod decryptor;
 pub mod password;
 
-use datadoctor_core::Result;
+use bytesurgeon_core::Result;
 use std::path::Path;
 
 pub trait DecryptionEngine {

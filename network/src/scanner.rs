@@ -1,4 +1,4 @@
-use datadoctor_core::Result;
+use bytesurgeon_core::Result;
 use tracing::{info, debug};
 use std::net::TcpStream;
 use std::time::Duration;
@@ -23,7 +23,7 @@ impl NetworkScanner {
 
         let base_ip: Vec<&str> = subnet.split('.').collect();
         if base_ip.len() != 4 {
-            return Err(datadoctor_core::Error::InvalidDevice("Invalid subnet format".to_string()));
+            return Err(bytesurgeon_core::Error::InvalidDevice("Invalid subnet format".to_string()));
         }
 
         for i in 1..255 {

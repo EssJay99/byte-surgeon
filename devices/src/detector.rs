@@ -1,4 +1,4 @@
-use datadoctor_core::{Result, DeviceInfo, DeviceType};
+use bytesurgeon_core::{Result, DeviceInfo, DeviceType};
 use tracing::info;
 
 pub struct DeviceDetector;

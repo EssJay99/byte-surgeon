@@ -1,7 +1,7 @@
 pub mod android;
 pub mod ios;
 
-use datadoctor_core::{Result, DeviceInfo};
+use bytesurgeon_core::{Result, DeviceInfo};
 
 pub trait MobileDevice {
     fn connect(&self) -> Result<()>;

@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use byteorder::{LittleEndian, ReadBytesExt};
 use tracing::{info, debug};
 
-use datadoctor_core::{Result, Error};
+use bytesurgeon_core::{Result, Error};
 use crate::{DiskImage, ImageMetadata};
 
 const E01_MAGIC_V1: &[u8; 8] = b"EVF0\x09\r\n\x00";

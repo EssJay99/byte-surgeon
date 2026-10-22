@@ -1,4 +1,4 @@
-# Data Doctor - Remaining Implementation Plan
+# Byte Surgeon - Remaining Implementation Plan
 
 ## Phase 1: GPU Acceleration (HIGH PRIORITY)
 - [ ] Create GPU acceleration crate with CUDA/OpenCL support

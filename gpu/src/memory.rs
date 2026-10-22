@@ -1,4 +1,4 @@
-//! GPU memory management for Data Doctor
+//! GPU memory management for Byte Surgeon
 //!
 //! Provides abstractions for GPU memory allocation and data transfer.
 

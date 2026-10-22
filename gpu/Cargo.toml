@@ -1,13 +1,13 @@
 [package]
-name = "datadoctor-gpu"
+name = "bytesurgeon-gpu"
 version = "1.0.0"
 edition = "2021"
-authors = ["Data Doctor Team"]
-description = "GPU acceleration for Data Doctor using CUDA and OpenCL"
+authors = ["Byte Surgeon Team"]
+description = "GPU acceleration for Byte Surgeon using CUDA and OpenCL"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
-datadoctor-filesystem = { path = "../filesystem" }
+bytesurgeon-core = { path = "../core" }
+bytesurgeon-filesystem = { path = "../filesystem" }
 tokio = { workspace = true }
 async-trait = { workspace = true }
 thiserror = { workspace = true }

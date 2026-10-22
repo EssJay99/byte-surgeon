@@ -1,4 +1,4 @@
-# Data Doctor - Quick Start Guide
+# Byte Surgeon - Quick Start Guide
 
 ## Installation
 
@@ -14,7 +14,7 @@ cd /Users/ted/TLE
 # Build in release mode
 cargo build --release
 
-# The binary will be at: target/release/datadoctor
+# The binary will be at: target/release/bytesurgeon
 ```
 
 ### Build the GUI
@@ -28,7 +28,7 @@ npm run tauri dev
 
 ### 1. Scan for Devices
 ```bash
-./target/release/datadoctor scan
+./target/release/bytesurgeon scan
 ```
 This will detect all connected storage devices.
 
@@ -38,7 +38,7 @@ This will detect all connected storage devices.
 mkdir -p recovered_files
 
 # Start recovery (example for Linux/macOS)
-./target/release/datadoctor recover \
+./target/release/bytesurgeon recover \
   --device /dev/sda \
   --mode signature \
   --output ./recovered_files
@@ -53,17 +53,17 @@ mkdir -p recovered_files
 
 ### 3. View Recovery Sessions
 ```bash
-./target/release/datadoctor sessions
+./target/release/bytesurgeon sessions
 ```
 
 ### 4. List Recovered Files
 ```bash
-./target/release/datadoctor files --session <session-id>
+./target/release/bytesurgeon files --session <session-id>
 ```
 
 ### 5. Scan for Threats
 ```bash
-./target/release/datadoctor threat-scan --path ./recovered_files
+./target/release/bytesurgeon threat-scan --path ./recovered_files
 ```
 
 ## Common Use Cases
@@ -71,10 +71,10 @@ mkdir -p recovered_files
 ### Recover from USB Drive
 ```bash
 # Find the USB device
-./target/release/datadoctor scan
+./target/release/bytesurgeon scan
 
 # Recover files (adjust device path as needed)
-./target/release/datadoctor recover \
+./target/release/bytesurgeon recover \
   --device /dev/sdb1 \
   --mode signature \
   --output ./usb_recovery
@@ -82,7 +82,7 @@ mkdir -p recovered_files
 
 ### Deep Scan a Hard Drive
 ```bash
-./target/release/datadoctor recover \
+./target/release/bytesurgeon recover \
   --device /dev/sda \
   --mode deep \
   --output ./deep_recovery
@@ -90,12 +90,12 @@ mkdir -p recovered_files
 
 ### Scan Network for Devices
 ```bash
-./target/release/datadoctor network-scan --subnet 192.168.1
+./target/release/bytesurgeon network-scan --subnet 192.168.1
 ```
 
 ### Check System Compliance
 ```bash
-./target/release/datadoctor compliance
+./target/release/bytesurgeon compliance
 ```
 
 ## Windows Users
@@ -103,10 +103,10 @@ mkdir -p recovered_files
 Device paths are different on Windows:
 ```powershell
 # Scan devices
-.\target\release\datadoctor.exe scan
+.\target\release\bytesurgeon.exe scan
 
 # Recover from D: drive
-.\target\release\datadoctor.exe recover --device \\.\D: --mode signature --output .\recovered
+.\target\release\bytesurgeon.exe recover --device \\.\D: --mode signature --output .\recovered
 ```
 
 ## macOS Users
@@ -115,7 +115,7 @@ You may need to grant disk access:
 ```bash
 # Give Full Disk Access in System Preferences > Security & Privacy
 # Then run:
-sudo ./target/release/datadoctor scan
+sudo ./target/release/bytesurgeon scan
 ```
 
 ## Troubleshooting
@@ -146,7 +146,7 @@ sudo ./target/release/datadoctor scan
 - Documentation: See README.md
 - Security: See SECURITY.md
 - Build issues: See BUILD.md
-- GitHub Issues: https://github.com/yourorg/datadoctor/issues
+- GitHub Issues: https://github.com/yourorg/bytesurgeon/issues
 
 ---
 

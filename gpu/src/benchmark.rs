@@ -1,4 +1,4 @@
-//! GPU benchmarking for Data Doctor
+//! GPU benchmarking for Byte Surgeon
 //!
 //! Provides tools to measure GPU acceleration performance.
 

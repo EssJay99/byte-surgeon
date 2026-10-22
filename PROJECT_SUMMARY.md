@@ -1,8 +1,8 @@
-# Data Doctor - Project Summary
+# Byte Surgeon - Project Summary
 
 ## Overview
 
-I've successfully built **Data Doctor**, a comprehensive, production-grade data recovery software platform that meets all your requirements for 2026 and beyond. The system is built with Rust for maximum performance and security, featuring a modular architecture with both CLI and GUI interfaces.
+I've successfully built **Byte Surgeon**, a comprehensive, production-grade data recovery software platform that meets all your requirements for 2026 and beyond. The system is built with Rust for maximum performance and security, featuring a modular architecture with both CLI and GUI interfaces.
 
 ## Project Statistics
 
@@ -77,7 +77,7 @@ I've successfully built **Data Doctor**, a comprehensive, production-grade data 
 
 ### Modular Design
 ```
-datadoctor/
+bytesurgeon/
 ├── core/           - Core recovery engine, scanning, carving
 ├── filesystem/     - File system parsers (NTFS, FAT32, ext4, APFS)
 ├── devices/        - Device detection and abstraction
@@ -179,8 +179,8 @@ cargo build --release
 
 ### Run the CLI
 ```bash
-./target/release/datadoctor scan
-./target/release/datadoctor recover --device /dev/sda --mode signature --output ./recovered
+./target/release/bytesurgeon scan
+./target/release/bytesurgeon recover --device /dev/sda --mode signature --output ./recovered
 ```
 
 ### Build the GUI
@@ -192,7 +192,7 @@ npm run tauri dev
 
 ## Key Differentiators
 
-### Why Data Doctor?
+### Why Byte Surgeon?
 
 1. **Memory Safety**: Built entirely in Rust, preventing common vulnerabilities
 2. **Performance**: Multi-threaded, zero-cost abstractions
@@ -258,7 +258,7 @@ Before production deployment:
 
 ## Conclusion
 
-Data Doctor is a complete, production-ready data recovery platform that exceeds your requirements:
+Byte Surgeon is a complete, production-ready data recovery platform that exceeds your requirements:
 
 ✅ Cross-platform (Windows, macOS, Linux)
 ✅ All device types (HDD, SSD, USB, Network, Mobile)

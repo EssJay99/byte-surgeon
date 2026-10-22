@@ -1,6 +1,6 @@
-# Data Doctor Benchmark Suite
+# Byte Surgeon Benchmark Suite
 
-Performance benchmarks for the Data Doctor data recovery engine using the
+Performance benchmarks for the Byte Surgeon data recovery engine using the
 [Criterion](https://github.com/bheisler/criterion.rs) framework.
 
 ## Prerequisites
@@ -25,19 +25,19 @@ Performance benchmarks for the Data Doctor data recovery engine using the
 ### All benchmarks
 ```bash
 cd /Users/ted/TLE
-cargo bench -p datadoctor-benchmarks
+cargo bench -p bytesurgeon-benchmarks
 ```
 
 ### Single benchmark
 ```bash
-cargo bench -p datadoctor-benchmarks --bench signature_scanning
-cargo bench -p datadoctor-benchmarks --bench file_carving
-cargo bench -p datadoctor-benchmarks --bench cache_performance
+cargo bench -p bytesurgeon-benchmarks --bench signature_scanning
+cargo bench -p bytesurgeon-benchmarks --bench file_carving
+cargo bench -p bytesurgeon-benchmarks --bench cache_performance
 ```
 
 ### Specific benchmark group
 ```bash
-cargo bench -p datadoctor-benchmarks --bench cache_performance -- cache_hit
+cargo bench -p bytesurgeon-benchmarks --bench cache_performance -- cache_hit
 ```
 
 ### Automated full run
@@ -80,10 +80,10 @@ after code changes to compare against this baseline.
 
 ```bash
 # Save current results
-cargo bench -p datadoctor-benchmarks -- --save-baseline current
+cargo bench -p bytesurgeon-benchmarks -- --save-baseline current
 
 # After code changes
-cargo bench -p datadoctor-benchmarks -- --baseline current
+cargo bench -p bytesurgeon-benchmarks -- --baseline current
 ```
 
 Criterion will report percentage changes and flag regressions.
@@ -111,4 +111,4 @@ benchmarks/
 1. Add a new `.rs` file in `benches/`
 2. Register it in `Cargo.toml` under `[[bench]]` with `harness = false`
 3. Use `criterion_group!` and `criterion_main!` macros
-4. Run with `cargo bench -p datadoctor-benchmarks --bench <name>`
+4. Run with `cargo bench -p bytesurgeon-benchmarks --bench <name>`

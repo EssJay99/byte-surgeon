@@ -1,13 +1,13 @@
 [package]
-name = "datadoctor-ml"
+name = "bytesurgeon-ml"
 version = "1.0.0"
 edition = "2021"
-authors = ["Data Doctor Team"]
-description = "Machine learning models for Data Doctor file classification"
+authors = ["Byte Surgeon Team"]
+description = "Machine learning models for Byte Surgeon file classification"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
-datadoctor-filesystem = { path = "../filesystem" }
+bytesurgeon-core = { path = "../core" }
+bytesurgeon-filesystem = { path = "../filesystem" }
 tokio = { workspace = true }
 async-trait = { workspace = true }
 thiserror = { workspace = true }

@@ -2,7 +2,7 @@ pub mod malware;
 pub mod compliance;
 pub mod audit;
 
-use datadoctor_core::{Result, ThreatStatus};
+use bytesurgeon_core::{Result, ThreatStatus};
 use std::path::Path;
 
 pub trait SecurityScanner {

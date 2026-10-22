@@ -8,7 +8,7 @@ TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 mkdir -p "$RESULTS_DIR"
 
 echo "============================================"
-echo "  Data Defender Benchmark Suite"
+echo "  Byte Surgeon Benchmark Suite"
 echo "  $(date)"
 echo "============================================"
 echo ""

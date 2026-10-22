@@ -1,12 +1,12 @@
 [package]
-name = "datadoctor-security"
+name = "bytesurgeon-security"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
 description = "Security and threat detection"
 
 [dependencies]
-datadoctor-core = { path = "../core" }
+bytesurgeon-core = { path = "../core" }
 tokio.workspace = true
 thiserror.workspace = true
 anyhow.workspace = true

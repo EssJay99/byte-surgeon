@@ -1,8 +1,8 @@
-# CI/CD Pipeline - Data Doctor
+# CI/CD Pipeline - Byte Surgeon
 
 ## Overview
 
-Data Doctor uses GitHub Actions for continuous integration and deployment. The CI/CD pipeline ensures code quality, security, and performance across all supported platforms.
+Byte Surgeon uses GitHub Actions for continuous integration and deployment. The CI/CD pipeline ensures code quality, security, and performance across all supported platforms.
 
 ## Workflows
 

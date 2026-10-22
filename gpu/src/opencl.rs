@@ -1,4 +1,4 @@
-//! OpenCL acceleration for Data Doctor
+//! OpenCL acceleration for Byte Surgeon
 //!
 //! Provides cross-platform GPU acceleration using OpenCL for signature scanning.
 

@@ -4,7 +4,7 @@ pub mod network;
 
 pub use detector::DeviceDetector;
 
-use datadoctor_core::{Result, DeviceInfo};
+use bytesurgeon_core::{Result, DeviceInfo};
 
 pub trait Device {
     fn info(&self) -> &DeviceInfo;
